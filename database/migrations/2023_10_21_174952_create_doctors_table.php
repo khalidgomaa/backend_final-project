@@ -17,7 +17,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('image');
             $table->string('experience');
-            $table->foreignId('vet_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            // $table->foreignId("category_id")->constrained()->onDelete("cascade")->onUpdate('cascade');
+
+            $table->foreignId('veterinary_center_id')->references('id')->on('veterinary_center')->constrained()->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

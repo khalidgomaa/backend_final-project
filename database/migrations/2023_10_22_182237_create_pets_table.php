@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('image');
             $table->string('price');
             $table->enum('operation', ['sell' , 'adopt']);
-            $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('category_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('user_id')->references('id')->on('users')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('category_id')->references('id')->on('category')->constrained()->onDelete('cascade')->onUpdate('cascade');
 
         });
     }
