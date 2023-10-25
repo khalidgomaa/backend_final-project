@@ -16,3 +16,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+ Route::get('endpoint/doctor',[App\Http\Controllers\DoctorController::class
+ ,'index'])->name('doctor');
