@@ -24,9 +24,9 @@ class DoctorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request ,Doctor $doctor)
     {
-        $validator=Validator::make($$request->all(),
+        $validator=Validator::make($request->all(),
         [
           "name"=>"required",
           "image"=>"required"
@@ -35,8 +35,14 @@ class DoctorController extends Controller
         if($validator ->fails()){
             return response($validator->errors()->all(),422);
         }
-        $doctor=Doctor::create($request->all());
-        return new DoctorResource($doctor);
+        
+        try {
+            $createdoctor=$doctor->create($request->all());
+            
+        return new DoctorResource($createdoctor);
+        } catch (\Throwable $th) {
+            dd($th);
+        }
     }
 
     /**
@@ -58,7 +64,7 @@ class DoctorController extends Controller
     public function update(Request $request,Doctor $doctor )
     {
 
-        $validator=Validator::make($$request->all(),
+        $validator=Validator::make($request->all(),
         [
           "name"=>"required",
           "image"=>"required"
@@ -68,7 +74,12 @@ class DoctorController extends Controller
             return response($validator->errors()->all(),422);
         }
 
-         $doctor->update( $request->all());
+        
+         
+            $doctor->update( $request->all());
+         
+            
+    
          return new DoctorResource($doctor);
     }
 
