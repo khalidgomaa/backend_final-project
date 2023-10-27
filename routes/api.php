@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\UsersController;
+use App\Http\Controllers\api\PetController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,3 +23,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('register' , [UsersController::class , 'register']);
 Route::post('login' , [UsersController::class , 'login']);
 Route::post('logout' , [UsersController::class , 'logout']);
+
+
+
+
+
+
+Route::apiResource('pets', PetController::class);
