@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\Sanctum;
 
@@ -18,6 +19,16 @@ class UsersController extends Controller
 
     public function register(Request $data)
     {
+        $validator = Validator::make($data->all(),[
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
+            'phone' => ['required', 'string', 'min:11'],
+            'password' => ['required'],
+
+        ]);
+        if($validator->fails()){
+            return response($validator->errors()->all(),422);
+        }
        $user= User::create([
             'name' => $data['name'],
             'phone' => $data['phone'],
