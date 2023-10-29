@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-
+use App\Http\Resources\PetResource;
 use Illuminate\Http\Request;
 use App\Models\Pet;
-use App\Http\Requests\PetRequest;
+use App\Http\Requests\storePet;
+use App\Http\Requests\updatePet;
 use Illuminate\Support\Facades\Validator;
 
 class PetController extends Controller
@@ -23,36 +24,41 @@ class PetController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PetRequest $request)
+    public function store(storePet $request, Pet $pet)
     {
-        // Validate the incoming request data using the PetRequest class
-        $validatedData = $request->validated();
+    
+    $validator = Validator::make($request->all(), $request->rules());
 
-        // Handle the image file upload if provided
+    // if ($validator->fails()) {
+    //     return response()->json(['errors' => $validator->errors()], 400);
+    // }
+
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('petimages', 'public');
-            $validatedData['image'] = $imagePath;
         } else {
-            // Handle the case when no image is provided
-            $validatedData['image'] = null;
+            $imagePath = null;
         }
-
-        // Create a new pet record and save it to the database
-        $pet = Pet::create($validatedData);
-
-        return response()->json(['message' => 'Pet record created successfully'], 201);
+    
+        $pet = Pet::create([
+            'age' => $request->input('age'),
+            'type' => $request->input('type'),
+            'gender' => $request->input('gender'),
+            'image' => $imagePath,
+            'price' => $request->input('price'),
+            'operation' => $request->input('operation'),
+            'user_id' => $request->input('user_id'),
+            'category_id' => $request->input('category_id'),
+        ]);
+         return response()->json(['message' => 'Pet record created successfully'], 201);
     }
+    
+    
 
-    /**
-     * Display the specified resource.
-     */
+    
     public function show(string $id)
     {
-        $pet = Pet::find($id);
+        $pet = Pet::findOrFail($id);
 
-        if (!$pet) {
-            return response()->json(['error' => 'Pet not found'], 404);
-        }
 
         return response()->json($pet);
     }
@@ -60,31 +66,29 @@ class PetController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(PetRequest $request, string $id)
+    public function update(updatePet $request, string $id)
     {
-        $pet = Pet::find($id);
+        $pet = Pet::findOrFail($id);
+    
+        $validatedData = $request->validate($request->rules());
 
-        if (!$pet) {
-            return response()->json(['error' => 'Pet not found'], 404);
-        }
-
-        // Validate the incoming request data using the PetRequest class
-        $validatedData = $request->validated();
-
-        // Handle the image file upload if provided
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('petimages', 'public');
-            $validatedData['image'] = $imagePath;
+            $validatedData['image']= $imagePath;
         } else {
-            // Handle the case when no image is provided
-            $validatedData['image'] = null;
+            $imagePath = null;
         }
-
-        // Update the pet with the validated data
+    
         $pet->update($validatedData);
-
+    
         return response()->json(['message' => 'Pet updated successfully']);
     }
+    
+    
+    
+    
+
+    
 
     /**
      * Remove the specified resource from storage.
