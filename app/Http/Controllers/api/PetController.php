@@ -9,6 +9,7 @@ use App\Models\Pet;
 use App\Http\Requests\storePet;
 use App\Http\Requests\updatePet;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\storgae;
 
 class PetController extends Controller
 {
@@ -73,12 +74,22 @@ class PetController extends Controller
         $validatedData = $request->validate($request->rules());
 
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('petimages', 'public');
-            $validatedData['image']= $imagePath;
-        } else {
-            $imagePath = null;
-        }
+            // Get the old image path
+            $oldImagePath = $pet->image;
     
+            // Store the new image
+            $imagePath = $request->file('image')->store('petimages', 'public');
+            $validatedData['image'] = $imagePath;
+    
+            // Delete the old image if it exists
+            if ($oldImagePath) {
+                Storage::disk('public')->delete($oldImagePath);
+            }
+        }
+        if ($pet->isDirty()) {
+            $pet->update($validatedData);
+        }
+        
         $pet->update($validatedData);
     
         return response()->json(['message' => 'Pet updated successfully']);

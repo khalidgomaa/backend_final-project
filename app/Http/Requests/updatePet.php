@@ -23,7 +23,7 @@ class updatePet extends FormRequest
     public function rules(): array
     {
         return [
-            'image' => 'sometimes|required',
+            'image' => 'nullable|image|mimes:jpeg,png,gif',
    
             'age' => 'sometimes|required',
             'type' => 'sometimes|required',
