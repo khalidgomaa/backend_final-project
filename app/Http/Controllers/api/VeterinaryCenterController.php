@@ -110,7 +110,7 @@ class VeterinaryCenterController extends Controller
             $veterinary_center->delete();
             return "Deleted Successfully";
         } else {
-            return "Already Deleted";
+            return "Already Deleted!";
         }
     }
 }
