@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('image');
             $table->string('experience');
             $table->timestamps();
+            $table->foreignId('veterinary_center_id')->references('id')
+            ->on('veterinary_center')->constrained()->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

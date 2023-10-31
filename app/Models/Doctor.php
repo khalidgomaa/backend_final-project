@@ -9,5 +9,9 @@ class Doctor extends Model
 {
     
     use HasFactory;
-    protected $fillable = ['name','image','experience'];
+    protected $fillable = ['name','image','experience','veterinary_center_id'];
+
+    function category(){
+        return $this->belongsTo(Category::class);
+    }
 }
