@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Resources\CategoryResource;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -26,53 +28,74 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return CategoryResource::collection($categories);    }
+        return CategoryResource::collection($categories);
+    }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            "name" => [Rule::unique('Categories')],
-            "desc" => "required",
-        ]);
-        if ($validator->fails()) {
-            return response($validator->errors()->all(), 402);
+        $validatedData = $request->validated();
+        // dd($validatedData);
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('CategoryImage', 'public');
+            $validatedData['image'] = $imagePath;
+        } else {
+            $validatedData['image'] = null;
         }
 
-        $Category = Category::create($request->all());
-        
-        return new CategoryResource($Category);    }
+        $Category = Category::create(['image' => $imagePath, 'name' => $request->input('name'), 'desc' => $request->input('desc')]);
+        return new CategoryResource($Category);
+    }
 
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show(string $id)
     {
+        $category = Category::find($id);
         return new CategoryResource($category);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category, string $id)
     {
-        $validator = Validator::make($request->all(), [
-            "name" => "required",
-        ]);
-        if ($validator->fails()) {
-            return response($validator->errors()->all(), 402);
+        $category = Category::findOrFail($id);
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('CategoryImage', 'public');
+            $category->update(['image' => $imagePath]);
         }
 
-        $category->update($request->all());
-        return new CategoryResource($category);    }
+        // Update other fields
+        $category->update([
+            'name' => $request->input('name', $category->name),
+            'desc' => $request->input('desc', $category->desc),
+        ]);
+        $category->update(['name' => $request->input('name'), 'desc' => $request->input('desc')]);
+        return new CategoryResource($category);
+    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(string $id)
     {
-        $category->delete();
-        return "Deleted Successfully";    }
+        $category = Category::find($id);
+        if ($category) {
+            if ($category->image) {
+                $imagePath = public_path('storage/' . $category->image);
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+            }
+
+            $category->delete();
+            return "Deleted Successfully";
+        } else {
+            return "Already Deleted";
+        }
+    }
 }
