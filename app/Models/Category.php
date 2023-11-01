@@ -17,6 +17,6 @@ class Category extends Model
     }
     public function user()
     {
-        return $this->belongsTo(user::class);
+        return $this->belongsTo(User::class);
     }
 }
