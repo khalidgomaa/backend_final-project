@@ -16,6 +16,7 @@ class VeterinaryCenterResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'street_address' => $this->street_address,
             'governorate' => $this->governorate,

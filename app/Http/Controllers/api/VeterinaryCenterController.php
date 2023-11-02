@@ -10,6 +10,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreVetCenterRequest;
 use App\Http\Resources\VeterinaryCenterResource;
+use Illuminate\Support\Facades\Storage;
 
 class VeterinaryCenterController extends Controller
 {
@@ -18,8 +19,9 @@ class VeterinaryCenterController extends Controller
      */
     public function index()
     {
-        $categories = veterinary_center::all();
-        return VeterinaryCenterResource::collection($categories);
+        $veterinary_center = veterinary_center::all();
+        return VeterinaryCenterResource::collection($veterinary_center);
+        // return veterinary_center::select('id', 'name')->get();
     }
 
     /**
@@ -27,33 +29,45 @@ class VeterinaryCenterController extends Controller
      */
     public function store(StoreVetCenterRequest $request)
     {
-        $validatedData = $request->validated();
-        if ($request->hasFile('logo')) {
-            $logoimagePath = $request->file('logo')->store('LogoImage', 'public');
-            $validatedData['logo'] = $logoimagePath;
-        } else {
-            $validatedData['logo'] = null;
-        }
-        if ($request->hasFile('license')) {
-            $licenseimagePath = $request->file('license')->store('LicenseImage', 'public');
-            $validatedData['license'] = $licenseimagePath;
-        } else {
-            $validatedData['license'] = null;
-        }
-        if ($request->hasFile('tax_record')) {
-            $taximagePath = $request->file('tax_record')->store('TaxRecordImage', 'public');
-            $validatedData['tax_record'] = $taximagePath;
-        } else {
-            $validatedData['tax_record'] = null;
-        }
-        if ($request->hasFile('commercial_record')) {
-            $commrecimagePath = $request->file('commercial_record')->store('CommercialRecordImage', 'public');
-            $validatedData['commercial_record'] = $commrecimagePath;
-        } else {
-            $validatedData['commercial_record'] = null;
-        }
 
-        $veterinary_center = veterinary_center::create(['name' => $request->input('name'), 'street_address' => $request->input('street_address'), 'governorate' => $request->input('governorate'), 'logo' => $logoimagePath, 'about' => $request->input('about'), 'license' => $licenseimagePath, 'open_at' => $request->input('open_at'), 'close_at' => $request->input('close_at'), 'tax_record' => $taximagePath, 'commercial_record' => $commrecimagePath, 'user_id' => $request->input('user_id')]);
+        $validatedData = $request->validated();
+        // if ($request->hasFile('logo')) {
+        //     $logoimagePath = $request->file('logo')->store('LogoImage', 'public');
+        //     $validatedData['logo'] = $logoimagePath;
+        // } else {
+        //     $validatedData['logo'] = null;
+        // }
+        // if ($request->hasFile('license')) {
+        //     $licenseimagePath = $request->file('license')->store('LicenseImage', 'public');
+        //     $validatedData['license'] = $licenseimagePath;
+        // } else {
+        //     $validatedData['license'] = null;
+        // }
+        // if ($request->hasFile('tax_record')) {
+        //     $taximagePath = $request->file('tax_record')->store('TaxRecordImage', 'public');
+        //     $validatedData['tax_record'] = $taximagePath;
+        // } else {
+        //     $validatedData['tax_record'] = null;
+        // }
+        // if ($request->hasFile('commercial_record')) {
+        //     $commrecimagePath = $request->file('commercial_record')->store('CommercialRecordImage', 'public');
+        //     $validatedData['commercial_record'] = $commrecimagePath;
+        // } else {
+        //     $validatedData['commercial_record'] = null;
+        // }
+        $data = $request->all();
+        $logofile = Storage::putfile("/public/logoImage", $data['logo']);
+        $data['logo'] = str_replace("public/", "storage/", "$logofile");
+
+        $licensefile = Storage::putfile("/public/licenseImage", $data['license']);
+        $data['license'] = str_replace("public/", "storage/", "$licensefile");
+
+        $taxRecordfile = Storage::putfile("/public/taxRecordImage", $data['tax_record']);
+        $data['tax_record'] = str_replace("public/", "storage/", "$taxRecordfile");
+
+        $commrecfile = Storage::putfile("/public/commrecImage", $data['commercial_record']);
+        $data['commercial_record'] = str_replace("public/", "storage/", "$commrecfile");
+        $veterinary_center = veterinary_center::create($data);
 
         return new VeterinaryCenterResource($veterinary_center);
     }
@@ -101,14 +115,14 @@ class VeterinaryCenterController extends Controller
     {
         $veterinary_center = veterinary_center::find($id);
         if ($veterinary_center) {
-            if ($veterinary_center->image) {
-                $imagePath = public_path('storage/' . $veterinary_center->image);
-                if (file_exists($imagePath)) {
-                    unlink($imagePath);
-                }
-            }
+            // if ($veterinary_center->image) {
+            //     $imagePath = public_path('storage/' . $veterinary_center->image);
+            //     if (file_exists($imagePath)) {
+            //         unlink($imagePath);
+            //     }
+            // }
             $veterinary_center->delete();
-            return "Deleted Successfully";
+            // return "Deleted Successfully";
         } else {
             return "Already Deleted!";
         }
