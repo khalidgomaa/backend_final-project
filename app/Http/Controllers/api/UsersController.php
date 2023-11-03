@@ -37,7 +37,7 @@ class UsersController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
-            'device_name' => 'required',
+            // 'device_name' => 'required',
         ]);
         
         $user = User::where('email', $request->email)->first();
@@ -48,8 +48,9 @@ class UsersController extends Controller
             ]);
         }
      
-        return $user->createToken($request->device_name)->plainTextToken;
-    }
+        $token = $user->createToken($request->email)->plainTextToken;
+
+        return response()->json(['message' => 'Login successful', 'access_token' => $token], 200);    }
 
     // public function logout(User $user)
     // {
