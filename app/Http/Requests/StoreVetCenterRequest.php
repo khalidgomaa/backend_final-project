@@ -26,7 +26,7 @@ class StoreVetCenterRequest extends FormRequest
         return [
             'name' => ["required", Rule::unique('categories')->ignore($this->category), "min:3"],
             'logo' => 'image|mimes:png,jpg,jpeg,gif',
-            'license' => 'image|mimes:png,jpg,jpeg,gif',
+            // 'license' => 'image|mimes:png,jpg,jpeg,gif',
             'tax_record' => 'image|mimes:png,jpg,jpeg,gif',
             'commercial_record' => 'image|mimes:png,jpg,jpeg,gif',
             'street_address' => 'required|min:5',
