@@ -24,9 +24,9 @@ class StoreDoctor extends FormRequest
         return [
             
             'name' => 'required',
-            'image' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,gif,webp',
             'experience' => 'required',
-            'veterinary_center_id'=>'required'
+            // 'veterinary_center_id'=>'required'
         ];
     }
 }
