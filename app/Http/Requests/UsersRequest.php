@@ -27,7 +27,6 @@ class UsersRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'phone' => ['required', 'string', 'min:11'],
             'password' => ['required'],
-
         ];
     }
 }

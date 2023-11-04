@@ -38,7 +38,6 @@ class UsersController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
-            'device_name' => 'required',
         ]);
         
         $user = User::where('email', $request->email)->first();
@@ -48,21 +47,19 @@ class UsersController extends Controller
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
-     
-        return $user->createToken($request->device_name)->plainTextToken;
+        $token = $user->createToken($request->email)->plainTextToken;
+
+        return response()->json(['message' => 'Login successful', 'access_token' => $token], 200);
     }
 
-    // public function logout(User $user)
-    // {
-    //     $user = Auth::guard('sanctum')->user();
-      
-    //     $token = $user->currentAccessToken();
-    //     // dd($token);
-    //     $token->delete();
-    //     return response("Logout" , 200);
-      
-        
-    // }
+    public function logout(User $user)
+    {
+        $user = Auth::guard('sanctum')->user();
+        $token = $user->currentAccessToken();
+        // dd($token);
+        $token->delete();
+        return response("Logout" , 200);  
+    }
 
 
 
