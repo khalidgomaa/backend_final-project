@@ -21,7 +21,7 @@ class OrderResource extends JsonResource
         'user_id' =>$this->user_id , 
         'user' =>$this->user, 
         // 'orders__items' =>$this->orders_Items,
-        "pets" => OrderItemResource::collection($this->orders_Items)
+        "pets" => OrderItemResource::collection($this->orders_Items )
 
         ] ;
     }

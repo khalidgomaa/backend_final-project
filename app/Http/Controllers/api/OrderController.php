@@ -5,8 +5,10 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
-use Illuminate\Http\Request;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 class OrderController extends Controller
 {
     /**
@@ -24,7 +26,19 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator =Validator::make($request->all(),[
+            "user_id" => "required",
+            // "email" => "unique:posts",
+
+        ]);
+        if($validator->fails()){
+            return response($validator->errors()->all(),422);
+        }
+        $order = Order::create($request->all());
+        
+        $order->save();
+        return response()->json(['message'=> $order])->setStatusCode(200) ;
+  
     }
 
     /**
@@ -32,7 +46,8 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        
+        return  new OrderResource($order);
     }
 
     /**
@@ -40,7 +55,17 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        $validator = Validator::make($request->all(),
+        [
+            'user_id' =>['required'],
+        ]
+        // return   OrderResource::collection($orders);
+    );
+    if($validator ->fails()){
+        return response($validator->errors()->all() ,422);
+    }
+        $order->update($request->all());
+        return response()->json(['message'=> $order])->setStatusCode(200) ;
     }
 
     /**
@@ -48,6 +73,8 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        $order->delete();
+        return response()->json(['message'=> "Deleted Successfully"])->setStatusCode(201);
+   
     }
 }
