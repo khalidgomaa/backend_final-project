@@ -16,17 +16,37 @@ class UsersController extends Controller
 
     public function register(Request $data)
     {
-       $user= User::create([
-            'name' => $data['name'],
-            'phone' => $data['phone'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-       ]);
-        if($user){
+        // Define the validation rules
+        $rules = [
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'role' => 'required|string|max:255',
+            'password' => 'required|string|min:6',
+        ];
+    
+        // Validate the incoming data
+        $validatedData = $data->validate($rules);
+    
+        // If validation fails, Laravel will automatically redirect back with errors
+    
+        // If validation passes, create the user
+        $user = User::create([
+            'name' => $validatedData['name'],
+            'phone' => $validatedData['phone'],
+            'email' => $validatedData['email'],
+            'role' => $validatedData['role'],
+            'password' => Hash::make($validatedData['password']),
+        ]);
+    
+        // Check if user was created successfully
+        if ($user) {
             return $user;
         }
-        return abort(404) ;
+    
+        return abort(404);
     }
+    
 
     /**
      * Display the specified resource.
