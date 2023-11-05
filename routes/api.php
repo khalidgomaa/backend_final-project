@@ -16,9 +16,7 @@ use App\Http\Controllers\api\DoctorController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('auth:sanctum')->get('/user', [UsersController::class, 'getuser']);
 
 Route::post('register' , [UsersController::class , 'register']);
 Route::post('login' , [UsersController::class , 'login']);

@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\Sanctum;
-
-
 class UsersController extends Controller
 {
 
@@ -52,22 +50,42 @@ class UsersController extends Controller
 
         return response()->json(['message' => 'Login successful', 'access_token' => $token], 200);    }
 
-    // public function logout(User $user)
+    public function logout(User $user)
+    {
+        $user = Auth::guard('sanctum')->user();
+      
+        $token = $user->currentAccessToken();
+        // dd($token);
+        $token->delete();
+        return response("Logout" , 200);
+      
+        }
+
+    // public function logout(Request $request)
     // {
-    //     $user = Auth::guard('sanctum')->user();
-      
-    //     $token = $user->currentAccessToken();
-    //     // dd($token);
-    //     $token->delete();
-    //     return response("Logout" , 200);
-      
-        
+    //     $user = $request->user();
+    //     $user->tokens->each(function ($token, $key) {
+    //         $token->delete();
+    //     });
+    
+    //     return response("Logout successful", 200);
     // }
+    
 
 
-
-
-
+    public function getuser(Request $request)
+    {
+        $user = $request->user();
+    
+        $userData = [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'phone' => $user->phone,
+        ];
+    
+        return response()->json($userData, 200);
+    }
 
 
 
@@ -77,10 +95,11 @@ class UsersController extends Controller
     /**
      * Display a listing of the resource.
      */
-    // public function index()
-    // {
-    //     //
-    // }
+   public function index()
+  {
+    $users=User::all();
+            return response()->json($users);
+     }
 
     // /**
     //  * Store a newly created resource in storage.
