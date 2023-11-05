@@ -5,6 +5,9 @@ use App\Http\Controllers\api\PetController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\DoctorController;
+use App\Http\Controllers\api\OrderController;
+use App\Http\Controllers\api\OrderItemController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -32,3 +35,10 @@ Route::apiResource('pets', PetController::class);
 // Route::get('doctor/{doctor}',[DoctorController::class ,'show']);
 
 Route::apiResource('doctors',DoctorController::class);
+
+Route::apiResource('orders', OrderController::class);
+// Route::get('order', [OrderController::class , 'index']);
+
+Route::apiResource('orders_items', OrderItemController::class);
+
+

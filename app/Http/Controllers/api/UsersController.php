@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UsersRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,7 @@ class UsersController extends Controller
 
 
 
-    public function register(Request $data)
+    public function register(UsersRequest $data)
     {
         // Define the validation rules
         $rules = [
@@ -55,7 +56,6 @@ class UsersController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
-            // 'device_name' => 'required',
         ]);
         
         $user = User::where('email', $request->email)->first();
@@ -65,10 +65,10 @@ class UsersController extends Controller
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
-     
         $token = $user->createToken($request->email)->plainTextToken;
 
-        return response()->json(['message' => 'Login successful', 'access_token' => $token], 200);    }
+        return response()->json(['message' => 'Login successful', 'access_token' => $token], 200);
+    }
 
     public function logout(User $user)
     {

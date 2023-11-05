@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class updatePet extends FormRequest
+class UsersRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,15 +23,10 @@ class updatePet extends FormRequest
     public function rules(): array
     {
         return [
-            'image' => 'nullable|image|mimes:jpeg,png,gif',
-   
-            'age' => 'sometimes|required',
-            'type' => 'sometimes|required',
-            'gender' => 'sometimes|required',
-            'price' => 'sometimes|required',
-            'operation' => 'sometimes|required|in:sell,adopt',
-            'user_id' => 'sometimes|required|exists:users,id',
-            'category' => 'sometimes|required',
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
+            'phone' => ['required', 'string', 'min:11'],
+            'password' => ['required'],
         ];
     }
 }

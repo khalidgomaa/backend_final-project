@@ -29,7 +29,7 @@ class storePet extends FormRequest
             'price' => 'required',
             'operation' => 'required|in:sell,adopt',
             'user_id' => 'required|exists:users,id',
-            'category_id' => 'required|exists:categories,id',
+            'category' => 'required',
         ];
     }
 }

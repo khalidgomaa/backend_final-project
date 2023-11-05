@@ -48,7 +48,7 @@ class PetController extends Controller
             'price' => $request->input('price'),
             'operation' => $request->input('operation'),
             'user_id' => $request->input('user_id'),
-            'category_id' => $request->input('category_id'),
+            'category' => $request->input('category'),
         ]);
          return response()->json(['message' => 'Pet record created successfully'], 201);
     }
