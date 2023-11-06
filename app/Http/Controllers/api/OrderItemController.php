@@ -9,6 +9,13 @@ use Illuminate\Http\Request;
 
 class OrderItemController extends Controller
 {
+
+
+    function __construct()
+    {
+        $this->middleware("auth:sanctum")->only(["store" ,"update"]);
+        
+    }
     /**
      * Display a listing of the resource.
      */

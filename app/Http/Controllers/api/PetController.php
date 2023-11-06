@@ -8,16 +8,22 @@ use Illuminate\Http\Request;
 use App\Models\Pet;
 use App\Http\Requests\storePet;
 use App\Http\Requests\updatePet;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
 class PetController extends Controller
 {
+
+    function __construct()
+    {
+        $this->middleware("auth:sanctum")->only(["store" ,"update"]);
+        
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-      
         $pets = Pet::with('user', 'category')->get();
         return response()->json($pets);
     }
@@ -39,7 +45,7 @@ class PetController extends Controller
         } else {
             $imagePath = null;
         }
-    
+        if (Gate::allows(["is_admin", "is_owner"])){
         $pet = Pet::create([
             'age' => $request->input('age'),
             'type' => $request->input('type'),
@@ -50,6 +56,9 @@ class PetController extends Controller
             'user_id' => $request->input('user_id'),
             'category_id' => $request->input('category_id'),
         ]);
+    }else{
+        return response()->json(['message'=> "not Authorize"]);
+    }
          return response()->json(['message' => 'Pet record created successfully'], 201);
     }
     
