@@ -18,15 +18,12 @@ class Pet extends Model
         'price',
         'operation',
         'user_id',
-        'category_id',
+        'category',
     ];
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function Category()
-    {
-        return $this->belongsTo(Category::class);
-    }
+   
 }

@@ -31,7 +31,7 @@ class updatePet extends FormRequest
             'price' => 'sometimes|required',
             'operation' => 'sometimes|required|in:sell,adopt',
             'user_id' => 'sometimes|required|exists:users,id',
-            'category_id' => 'sometimes|required|exists:categories,id',
+            'category' => 'sometimes|required',
         ];
     }
 }

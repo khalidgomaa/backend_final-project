@@ -54,7 +54,7 @@ class PetController extends Controller
             'price' => $request->input('price'),
             'operation' => $request->input('operation'),
             'user_id' => $request->input('user_id'),
-            'category_id' => $request->input('category_id'),
+            'category' => $request->input('category'),
         ]);
     }else{
         return response()->json(['message'=> "not Authorize"]);
@@ -84,7 +84,7 @@ class PetController extends Controller
 
         if ($request->hasFile('image')) {
             // Get the old image path
-            $oldImagePath = $pet->image;
+            // $oldImagePath = $pet->image;
     
             // Store the new image
             $imagePath = $request->file('image')->store('petimages', 'public');
@@ -94,7 +94,10 @@ class PetController extends Controller
             // if ($oldImagePath) {
             //     Storage::disk('public')->delete($oldImagePath);
             // }
+        } else {
+            $imagePath = null;
         }
+
         // if ($pet->isDirty()) {
         //     $pet->update($validatedData);
         // }
