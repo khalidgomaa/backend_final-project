@@ -18,4 +18,8 @@ class Order__item extends Model
     {
         return $this->belongsTo(Pet::class);
     }
+    public function supply()
+    {
+        return $this->belongsTo(Supply::class);
+    }
 }

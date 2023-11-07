@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\DoctorController;
 use App\Http\Controllers\api\OrderController;
 use App\Http\Controllers\api\OrderItemController;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\SupplyController;
+use App\Http\Middleware\is_admin;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +21,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', [UsersController::class, 'getuser']);
+Route::middleware('auth:sanctum')->get('/user', [UsersController::class, 'getuser'])->middleware(is_admin::class);
 
 // Auth::routes();
 
@@ -40,6 +41,8 @@ Route::post('logout' , [UsersController::class , 'logout']);
     // Route::get('order', [OrderController::class , 'index']);
     
     Route::apiResource('orders_items', OrderItemController::class);
+
+    Route::apiResource('supplies', SupplyController::class)->middleware('auth:sanctum');
 
 // });
 
