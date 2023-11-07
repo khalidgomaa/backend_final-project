@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\Validator;
 
 class PetController extends Controller
 {
-    function __construct()
-    {
-        $this->middleware("auth:sanctum")->only(["store" ,"update,destroy"]);
+    // function __construct()
+    // {
+    //     $this->middleware("auth:sanctum")->only(["store" ,"update,destroy"]);
         
-    }
+    // }
     /**
      * Display a listing of the resource.
      */
