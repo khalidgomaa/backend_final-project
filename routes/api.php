@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\AppointmentsController;
 use App\Http\Controllers\api\UsersController;
 use App\Http\Controllers\api\PetController;
 use Illuminate\Http\Request;
@@ -7,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\DoctorController;
 use App\Http\Controllers\api\OrderController;
 use App\Http\Controllers\api\OrderItemController;
-use App\Http\Controllers\SupplyController;
+use App\Http\Controllers\api\SupplyController;
 use App\Http\Middleware\is_admin;
 
 /*
@@ -43,11 +44,14 @@ Route::post('logout' , [UsersController::class , 'logout']);
     Route::apiResource('orders_items', OrderItemController::class);
 
     Route::apiResource('supplies', SupplyController::class);
+    Route::apiResource('appointment', AppointmentsController::class);
+
 
 // });
 
 
 
+Route::apiResource('supplies', SupplyController::class);
 
 
 

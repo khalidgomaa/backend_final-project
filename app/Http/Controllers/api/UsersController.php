@@ -22,7 +22,7 @@ class UsersController extends Controller
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
-            'role' => 'required|string|max:255',
+            // 'role' => 'required|string|max:255',
             'password' => 'required|string|min:6',
         ];
     
@@ -36,7 +36,7 @@ class UsersController extends Controller
             'name' => $validatedData['name'],
             'phone' => $validatedData['phone'],
             'email' => $validatedData['email'],
-            'role' => $validatedData['role'],
+            // 'role' => $validatedData['role'],
             'password' => Hash::make($validatedData['password']),
         ]);
     

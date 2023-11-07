@@ -14,13 +14,15 @@ return new class extends Migration
         Schema::create('supplies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description');
-            $table->enum('isAvailable',['true' , 'false']);
-            $table->double('ptice');
+            $table->text('description');
+            $table->decimal('price', 8, 2);
+            $table->integer('quantity');
             $table->string('image');
-            $table->double('quantity');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->string('category');
+            $table->boolean('is_available')->default(true);
             $table->timestamps();
+            $table->foreignId('user_id')->references('id')->on('users')->constrained()->onDelete('cascade')->onUpdate('cascade');
+
         });
     }
 
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('suplies');
+        Schema::dropIfExists('supplies');
     }
 };

@@ -7,19 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Supply extends Model
 {
-    use HasFactory;
-    protected $fillable =[
+    protected $fillable = [
         'name',
         'description',
-        'isAvailable',
-        'ptice',
-        'image',
+        'price',
         'quantity',
-        'user_id'
+        'image',
+        'is_available',
+        'user_id',
+        'category',
     ];
+    use HasFactory;
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    
 }

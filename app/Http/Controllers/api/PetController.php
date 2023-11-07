@@ -24,7 +24,8 @@ class PetController extends Controller
      */
     public function index()
     {
-        $pets = Pet::with('user', 'category')->get();
+      
+        $pets = Pet::with('user')->get();
         return response()->json($pets);
     }
 
