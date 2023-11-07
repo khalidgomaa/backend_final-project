@@ -34,7 +34,9 @@ Route::apiResource('pets', PetController::class);
 // Route::get('doctor',[DoctorController::class ,'index']);
 // Route::get('doctor/{doctor}',[DoctorController::class ,'show']);
 
+Route::middleware(['apikey'])->group(function(){
 Route::apiResource('doctors',DoctorController::class);
+});
 
 Route::apiResource('orders', OrderController::class);
 // Route::get('order', [OrderController::class , 'index']);
