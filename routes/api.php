@@ -42,7 +42,7 @@ Route::post('logout' , [UsersController::class , 'logout']);
     
     Route::apiResource('orders_items', OrderItemController::class);
 
-    Route::apiResource('supplies', SupplyController::class)->middleware('auth:sanctum');
+    Route::apiResource('supplies', SupplyController::class);
 
 // });
 
