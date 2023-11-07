@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\DoctorController;
 use App\Http\Controllers\api\OrderController;
 use App\Http\Controllers\api\OrderItemController;
+use App\Http\Controllers\api\SupplyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,7 @@ Route::post('logout' , [UsersController::class , 'logout']);
 
 
 
+Route::apiResource('supplies', SupplyController::class);
 
 Route::apiResource('pets', PetController::class);
 // Route::get('doctor',[DoctorController::class ,'index']);
