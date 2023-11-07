@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller; 
-
+use App\Http\Requests\SupplyRequest;
 use Illuminate\Http\Request;
 use App\Models\Supply;
+use Illuminate\Support\Facades\Validator;
 
 class SupplyController extends Controller
 {
@@ -26,7 +27,7 @@ class SupplyController extends Controller
     // {
     //     // Validation and saving logic
     // }
-    public function store(storeSupply $request, Supply $supply)
+    public function store(SupplyRequest $request, Supply $supply)
     {
     
     $validator = Validator::make($request->all(), $request->rules());
@@ -45,6 +46,7 @@ class SupplyController extends Controller
             'name' => $request->input('name'),
             'description' => $request->input('description'),
             'price' => $request->input('price'),
+            'category' => $request->input('category'),
             'image' => $imagePath,
             'quantity' => $request->input('quantity'),
             'is_available' => $request->input('is_available'),
