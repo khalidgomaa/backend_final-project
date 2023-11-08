@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\Validator;
 
 class PetController extends Controller
 {
-    function __construct()
-    {
-        $this->middleware("auth:sanctum")->only(["store" ,"update,destroy"]);
+    // function __construct()
+    // {
+    //     $this->middleware("auth:sanctum")->only(["store" ,"update,destroy"]);
         
-    }
+    // }
     /**
      * Display a listing of the resource.
      */
@@ -94,15 +94,10 @@ class PetController extends Controller
             $imagePath = null;
         }
 
-        // if ($pet->isDirty()) {
-        //     $pet->update($validatedData);
-        // }
-
         $pet->update($validatedData);
     
-        return response()->json(['message' => 'Pet updated successfully']);
-    }
-    
+        return response()->json(['message' => 'Pet updated successfully','pet'=>$pet,'validation data'=>$validatedData]);
+    }  
     
     
     

@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class updatePet extends FormRequest
+class CategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,15 +23,9 @@ class updatePet extends FormRequest
     public function rules(): array
     {
         return [
-   
-            'age' => 'sometimes|required',
-            'type' => 'sometimes|required',
-            'gender' => 'sometimes|required',
-            'price' => 'sometimes|required',
-            'operation' => 'sometimes|required|in:sell,adopt',
-            'user_id' => 'sometimes|required|exists:users,id',
-            'category' => 'sometimes|required',
-            'image' => 'sometimes|required|image|mimes:jpeg,png,gif,jpg',
+            'name' => ["required", Rule::unique('categories')->ignore($this->category), "min:3"],
+            'image' => 'image|mimes:png,jpg,jpeg,gif',
+            'desc' => 'required|min:15',
         ];
     }
 }

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('veterinary_center', function (Blueprint $table) {
+        Schema::create('veterinary_centers', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->string('name');
@@ -27,7 +27,6 @@ return new class extends Migration
             $table->string('commercial_record');
             $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
 
-
         });
     }
 
@@ -36,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('veterinary_center');
+        Schema::dropIfExists('veterinary_centers');
     }
 };
