@@ -13,13 +13,12 @@ return new class extends Migration
     {
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('name');
             $table->string('image');
             $table->string('experience');
-            // $table->foreignId("category_id")->constrained()->onDelete("cascade")->onUpdate('cascade');
-
-            $table->foreignId('veterinary_center_id')->references('id')->on('veterinary_center')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->timestamps();
+            $table->foreignId('veterinary_center_id')->references('id')
+            ->on('veterinary_center')->constrained()->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
