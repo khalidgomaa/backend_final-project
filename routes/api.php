@@ -10,6 +10,7 @@ use App\Http\Controllers\api\DoctorController;
 use App\Http\Controllers\api\OrderController;
 use App\Http\Controllers\api\OrderItemController;
 use App\Http\Controllers\api\SupplyController;
+use App\Http\Controllers\api\FeedbackController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,13 +29,16 @@ Route::post('register' , [UsersController::class , 'register']);
 Route::post('login' , [UsersController::class , 'login']);
 Route::post('logout' , [UsersController::class , 'logout']);
 
+Route::apiResource('feedbacks', FeedbackController::class);
 
 
-
-
+// for feedbacks 
 Route::apiResource('supplies', SupplyController::class);
 
 Route::apiResource('pets', PetController::class);
+
+
+
 // Route::get('doctor',[DoctorController::class ,'index']);
 // Route::get('doctor/{doctor}',[DoctorController::class ,'show']);
 
