@@ -10,10 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\Sanctum;
+
 class UsersController extends Controller
 {
-
-
 
     public function register(UsersRequest $data)
     {
@@ -25,12 +24,12 @@ class UsersController extends Controller
             'role' => 'required|string|max:255',
             'password' => 'required|string|min:6',
         ];
-    
+
         // Validate the incoming data
         $validatedData = $data->validate($rules);
-    
+
         // If validation fails, Laravel will automatically redirect back with errors
-    
+
         // If validation passes, create the user
         $user = User::create([
             'name' => $validatedData['name'],
@@ -39,28 +38,28 @@ class UsersController extends Controller
             'role' => $validatedData['role'],
             'password' => Hash::make($validatedData['password']),
         ]);
-    
-        // Check if user was created successfully
+
+        // Check if the user was created successfully
         if ($user) {
             return $user;
         }
-    
+
         return abort(404);
     }
-    
 
     /**
      * Display the specified resource.
      */
-    public function login (Request $request) {
+    public function login(Request $request)
+    {
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
-        
+
         $user = User::where('email', $request->email)->first();
-     
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
@@ -73,83 +72,68 @@ class UsersController extends Controller
     public function logout(User $user)
     {
         $user = Auth::guard('sanctum')->user();
-      
+
         $token = $user->currentAccessToken();
-        // dd($token);
         $token->delete();
-        return response("Logout" , 200);
-      
+
+        return response("Logout", 200);
+    }
+
+    public function update(Request $request)
+    {
+        // Ensure the user is authenticated
+        // if (!Auth::check()) {
+        //     return response()->json(["error" => "User not authenticated"], 401);
+        // }
+    
+        $user = Auth::user();
+    
+        // Validate the form data
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'old_password' => 'required|string',
+            'password' => 'nullable|string|min:8|confirmed', // 'confirmed' checks for password_confirmation field
+        ]);
+    
+        if (!Hash::check($request->input('old_password'), $user->password)) {
+            return response()->json(["error" => "The old password is not valid"], 422);
         }
-
-    // public function logout(Request $request)
-    // {
-    //     $user = $request->user();
-    //     $user->tokens->each(function ($token, $key) {
-    //         $token->delete();
-    //     });
     
-    //     return response("Logout successful", 200);
-    // }
+        // Update user's profile
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->phone = $request->input('phone');
     
-
+        // Check if a new password is provided
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->input('password'));
+        }
+    
+        $user->save();
+    
+        return response()->json(["message" => "Updated successfully"], 200);
+    }
+    
 
     public function getuser(Request $request)
     {
         $user = $request->user();
-    
+
         $userData = [
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'phone' => $user->phone,
         ];
-    
+
         return response()->json($userData, 200);
     }
 
-
-
-
-
-
-    /**
-     * Display a listing of the resource.
-     */
-   public function index()
-  {
-    $users=User::all();
-            return response()->json($users);
-     }
-
-    // /**
-    //  * Store a newly created resource in storage.
-    //  */
-    // public function store(Request $request)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Display the specified resource.
-    //  */
-    // public function show(User $user)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Update the specified resource in storage.
-    //  */
-    // public function update(Request $request, User $user)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Remove the specified resource from storage.
-    //  */
-    // public function destroy(User $user)
-    // {
-    //     //
-    // }
+    public function index()
+    {
+        $users = User::all();
+        return response()->json($users);
+    }
 }

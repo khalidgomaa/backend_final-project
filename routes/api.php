@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->get('/user', [UsersController::class, 'getuse
 Route::post('register' , [UsersController::class , 'register']);
 Route::post('login' , [UsersController::class , 'login']);
 Route::post('logout' , [UsersController::class , 'logout']);
+Route::put('update_user' , [UsersController::class , 'update']);
 
 Route::apiResource('feedbacks', FeedbackController::class);
 
