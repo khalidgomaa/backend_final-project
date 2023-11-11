@@ -3,11 +3,12 @@
 use App\Http\Controllers\api\AppointmentsController;
 use App\Http\Controllers\api\UsersController;
 use App\Http\Controllers\api\PetController;
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\DoctorController;
 use App\Http\Controllers\api\OrderController;
 use App\Http\Controllers\api\OrderItemController;
+use App\Http\Controllers\api\PaypalController;
 use App\Http\Controllers\api\SupplyController;
 use App\Http\Middleware\is_admin;
 
@@ -55,3 +56,8 @@ Route::apiResource('supplies', SupplyController::class);
 
 
 
+// payment
+
+Route::get('payment' ,[PaypalController::class ,'payment'])->name('payment');
+Route::get('cancel' ,[PaypalController::class ,'cancel'])->name('payment.cancel');
+Route::get('payment/success' ,[PaypalController::class ,'success'])->name('payment.success');

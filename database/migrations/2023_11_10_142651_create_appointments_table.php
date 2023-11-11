@@ -8,15 +8,14 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * is_confirmed
-     * user_id
-     * veternary_id
      */
     public function up(): void
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->enum('is_confirmed', ['true' , 'false']);
+            $table->date('date');
+            $table->time('time');
+            $table->string('pet_type');
             $table->foreignId('user_id')->references('id')->on('users')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('veternary_id')->references('id')->on('veterinary_center')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

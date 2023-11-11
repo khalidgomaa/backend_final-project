@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Appointment extends Model
 {
     use HasFactory;
-    protected $fillable = ['is_confirmed','user_id','veternary_id'];
+    protected $fillable = ['pet_type','time','date','user_id','veternary_id'];
 
   
 }

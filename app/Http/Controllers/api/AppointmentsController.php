@@ -23,8 +23,11 @@ class AppointmentsController extends Controller
      */
     public function store(Request $request)
     {
-        $validator =Validator::make($request->all(),[
-            "is_confirmed" => "required",
+        $validator =Validator::make($request->all(),
+        [   
+            "pet_type" => "required",
+            "date" => 'required|after_or_equal:' . date('Y-m-d'),
+            "time" => "required |date_format:H:i",
             "user_id" => "required",
             "veternary_id" => "required",
         ]);
@@ -33,7 +36,6 @@ class AppointmentsController extends Controller
             return response($validator->errors()->all(),422);
         }
         $appointment = Appointment::create($request->all());
-        
         $appointment->save();
         return response()->json(['message'=> $appointment])->setStatusCode(200) ;
   
