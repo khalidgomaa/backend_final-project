@@ -10,6 +10,7 @@ use App\Http\Controllers\api\OrderController;
 use App\Http\Controllers\api\OrderItemController;
 use App\Http\Controllers\api\PaypalController;
 use App\Http\Controllers\api\SupplyController;
+use App\Http\Controllers\api\EmailController;
 use App\Http\Middleware\is_admin;
 
 /*
@@ -61,3 +62,8 @@ Route::apiResource('supplies', SupplyController::class);
 Route::get('payment' ,[PaypalController::class ,'payment'])->name('payment');
 Route::get('cancel' ,[PaypalController::class ,'cancel'])->name('payment.cancel');
 Route::get('payment/success' ,[PaypalController::class ,'success'])->name('payment.success');
+
+
+///mail
+Route::get('accept' ,[EmailController::class ,'accept'])->middleware('auth:sanctum');
+Route::get('reject' ,[EmailController::class ,'reject'])->middleware('auth:sanctum');
