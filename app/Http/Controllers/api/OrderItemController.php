@@ -4,7 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderItemResource;
-use App\Models\Order__item;
+use App\Models\Order_item;
 use Illuminate\Http\Request;
 
 class OrderItemController extends Controller
@@ -19,6 +19,22 @@ class OrderItemController extends Controller
         return   OrderItemResource::collection($orders_items);
     }
 
+    public function store(Request $request)
+    {
+        $validator =Validator::make($request->all(),[
+            "user_id" => "required",
+         
+
+        ]);
+        if($validator->fails()){
+            return response($validator->errors()->all(),422);
+        }
+        $order = Order::create($request->all());
+        
+        $order->save();
+        return response()->json(['message'=> $order])->setStatusCode(200) ;
+  
+    }
     /**
      * Store a newly created resource in storage.
      */

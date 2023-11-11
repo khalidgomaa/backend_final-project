@@ -28,6 +28,7 @@ class OrderController extends Controller
     {
         $validator =Validator::make($request->all(),[
             "user_id" => "required",
+            "total_price" => "required",
             // "email" => "unique:posts",
 
         ]);
@@ -58,6 +59,7 @@ class OrderController extends Controller
         $validator = Validator::make($request->all(),
         [
             'user_id' =>['required'],
+            'total_price' =>['required'],
         ]
         // return   OrderResource::collection($orders);
     );
@@ -74,7 +76,7 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         $order->delete();
-        return response()->json(['message'=> "Deleted Successfully"])->setStatusCode(201);
+        return response()->json(['message'=> "order Deleted Successfully"])->setStatusCode(201);
    
     }
 }
