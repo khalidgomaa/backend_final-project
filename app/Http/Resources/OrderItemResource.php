@@ -20,7 +20,8 @@ class OrderItemResource extends JsonResource
         // 'id' =>$this->id , 
         // 'user_id' =>$this->user_id , 
         // 'user' =>$this->user, 
-        'pet' =>$this->pet,
+        'pets' =>$this->pet,
+        'Supplies' =>SupplyResource::collection($this->supply),
 
         ] ;
     }

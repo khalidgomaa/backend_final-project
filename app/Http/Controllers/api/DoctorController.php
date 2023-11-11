@@ -11,8 +11,18 @@ use App\Http\Requests\StoreDoctor;
 use App\Http\Requests\UpdateDoctor;
 use Illuminate\Validation\Rule;
 use App\Http\Resources\DoctorResource;
+use Illuminate\Support\Facades\Gate;
+
+
 class DoctorController extends Controller
 {
+
+
+    function __construct()
+    {
+        $this->middleware("auth:sanctum")->only(["store" ,"update"]);
+        
+    }
     /**
      * Display a listing of the resource.
      */
@@ -37,13 +47,18 @@ class DoctorController extends Controller
         } else {
             $imagePath = null;
         }
-
+        
+        if (Gate::allows(["is_admin", "is_owner"])) {
         $doctor = Doctor::create([
             'name' => $request->input('name'),
             'experience' => $request->input('experience'),
             'image' => $imagePath,
             'veterinary_center_id'=>$request->input('veterinary_center_id')
         ]);
+        }
+        return response()->json(['message'=> "not Authorize"]);
+  
+
         return new DoctorResource($doctor);
         return response()->json(['message' => 'doctor record created successfully'], 201);
     }
@@ -95,10 +110,13 @@ class DoctorController extends Controller
             unlink($imagePath);
         }
     }
-
+    if (Gate::allows(["is_admin", "is_owner"])) {
        //delete doctor
        $doctor->delete();
        return "deleted successfully";
+    }
+        return response()->json(['message'=> "not Authorize"]);
+    
 
     }
 }

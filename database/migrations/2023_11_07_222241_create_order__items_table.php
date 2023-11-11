@@ -14,9 +14,8 @@ return new class extends Migration
         Schema::create('order__items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->references('id')->on('orders')->constrained()->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('pet_id')->nullable()->references('id')->on('pets')->constrained()->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('supply_id')->nullable()->references('id')->on('supplies')->constrained()->onDelete('cascade')->onUpdate('cascade');
-
+            $table->foreignId('pet_id')->references('id')->on('pets')->nullable()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('supply_id')->references('id')->on('supplies')->nullable()->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

@@ -3,18 +3,20 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\PetResource;
-use Illuminate\Http\Request;
+// use App\Http\Resources\PetResource;
+// use Illuminate\Http\Request;
 use App\Models\Pet;
 use App\Http\Requests\storePet;
 use App\Http\Requests\updatePet;
+// use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
 class PetController extends Controller
 {
+
     function __construct()
     {
-        $this->middleware("auth:sanctum")->only(["store" ,"update,destroy"]);
+        $this->middleware("auth:sanctum")->only(["store" ,"update"  ,"destroy"]);
         
     }
     /**
@@ -44,7 +46,7 @@ class PetController extends Controller
         } else {
             $imagePath = null;
         }
-    
+       
         $pet = Pet::create([
             'age' => $request->input('age'),
             'type' => $request->input('type'),
@@ -53,8 +55,9 @@ class PetController extends Controller
             'price' => $request->input('price'),
             'operation' => $request->input('operation'),
             'user_id' => $request->input('user_id'),
-            'category' => $request->input('category'),
+            'category_id' => $request->input('category_id'),
         ]);
+   
          return response()->json(['message' => 'Pet record created successfully'], 201);
     }
     
@@ -80,7 +83,7 @@ class PetController extends Controller
 
         if ($request->hasFile('image')) {
             // Get the old image path
-            // $oldImagePath = $pet->image;
+            $oldImagePath = $pet->image;
     
             // Store the new image
             $imagePath = $request->file('image')->store('petimages', 'public');
@@ -90,10 +93,7 @@ class PetController extends Controller
             // if ($oldImagePath) {
             //     Storage::disk('public')->delete($oldImagePath);
             // }
-        } else {
-            $imagePath = null;
         }
-
         // if ($pet->isDirty()) {
         //     $pet->update($validatedData);
         // }

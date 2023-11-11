@@ -22,7 +22,7 @@ class UsersController extends Controller
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
-            'role' => 'required|string|max:255',
+            // 'role' => 'required|string|max:255',
             'password' => 'required|string|min:6',
         ];
     
@@ -36,7 +36,7 @@ class UsersController extends Controller
             'name' => $validatedData['name'],
             'phone' => $validatedData['phone'],
             'email' => $validatedData['email'],
-            'role' => $validatedData['role'],
+            // 'role' => $validatedData['role'],
             'password' => Hash::make($validatedData['password']),
         ]);
     
@@ -70,16 +70,16 @@ class UsersController extends Controller
         return response()->json(['message' => 'Login successful', 'access_token' => $token], 200);
     }
 
-    public function logout(User $user)
-    {
-        $user = Auth::guard('sanctum')->user();
+    // public function logout(User $user)
+    // {
+    //     $user = Auth::guard('sanctum')->user();
       
-        $token = $user->currentAccessToken();
-        // dd($token);
-        $token->delete();
-        return response("Logout" , 200);
+    //     $token = $user->currentAccessToken();
+    //     // dd($token);
+    //     $token->delete();
+    //     return response("Logout" , 200);
       
-        }
+    //     }
 
     // public function logout(Request $request)
     // {
@@ -95,8 +95,8 @@ class UsersController extends Controller
 
     public function getuser(Request $request)
     {
+        
         $user = $request->user();
-    
         $userData = [
             'id' => $user->id,
             'name' => $user->name,
@@ -116,10 +116,11 @@ class UsersController extends Controller
      * Display a listing of the resource.
      */
    public function index()
-  {
-    $users=User::all();
+    {       
+            $this->authorize('is_admin');
+            $users=User::all();
             return response()->json($users);
-     }
+    }
 
     // /**
     //  * Store a newly created resource in storage.
