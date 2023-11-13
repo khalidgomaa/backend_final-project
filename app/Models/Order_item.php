@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Order_item extends Model
 {
     use HasFactory;
-    protected $fillable = ['order_id','pet_id','count'];
+    protected $fillable = ['order_id','pet_id','supply_id','quantity'];
 
-    public function orders()
+    public function order()
     {
-        return $this->hasMany(Order::class);
+        return $this->belongsTo(Order::class);
     }
     public function pet()
     {

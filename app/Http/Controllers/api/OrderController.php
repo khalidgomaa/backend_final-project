@@ -17,8 +17,10 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::all();
+        $orders = Order::with('user')->get();
+        return response()->json($orders);
         // dd("mostafa");
-        return   OrderResource::collection($orders);
+        // return   OrderResource::collection($orders);
     }
 
     /**
@@ -26,21 +28,26 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $validator =Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             "user_id" => "required",
             "total_price" => "required",
-            // "email" => "unique:posts",
-
         ]);
-        if($validator->fails()){
-            return response($validator->errors()->all(),422);
+    
+        if ($validator->fails()) {
+            return response($validator->errors()->all(), 422);
         }
+    
         $order = Order::create($request->all());
-        
-        $order->save();
-        return response()->json(['message'=> $order])->setStatusCode(200) ;
-  
+    
+        // Access the id property of the created order
+        $orderId = $order->id;
+    
+        // Add the id to the order object
+        $order->id = $orderId;
+    
+        return response()->json($order)->setStatusCode(200);
     }
+    
 
     /**
      * Display the specified resource.

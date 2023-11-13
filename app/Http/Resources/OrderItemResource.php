@@ -17,10 +17,8 @@ class OrderItemResource extends JsonResource
         // return parent::toArray($request);
         return
         [
-        // 'id' =>$this->id , 
-        // 'user_id' =>$this->user_id , 
-        // 'user' =>$this->user, 
-        'pet' =>$this->pet,
+        'order_id' =>$this->order_id , 
+     
 
         ] ;
     }

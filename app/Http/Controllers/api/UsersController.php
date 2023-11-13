@@ -123,6 +123,7 @@ class UsersController extends Controller
 
         $userData = [
             'id' => $user->id,
+            'role' => $user->role,
             'name' => $user->name,
             'email' => $user->email,
             'phone' => $user->phone,

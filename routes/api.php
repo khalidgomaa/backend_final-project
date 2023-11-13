@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\api\CategoryController;
 use App\Http\Controllers\api\UsersController;
 use App\Http\Controllers\api\PetController;
 use App\Http\Controllers\api\VeterinaryCenterController;
@@ -52,6 +51,5 @@ Route::apiResource('orders', OrderController::class);
 
 Route::apiResource('orders_items', OrderItemController::class);
 
-Route::apiResource('Categories', CategoryController::class);
 Route::apiResource('VeterinaryCenters', VeterinaryCenterController::class);
 

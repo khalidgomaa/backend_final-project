@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderItemResource;
 use App\Models\Order_item;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class OrderItemController extends Controller
 {
@@ -14,27 +15,31 @@ class OrderItemController extends Controller
      */
     public function index()
     {
-        $orders_items = Order__item::all();
+        $orders_items = Order_item::all();
         //  dd("mostafa");
         return   OrderItemResource::collection($orders_items);
     }
 
     public function store(Request $request)
     {
-        $validator =Validator::make($request->all(),[
-            "user_id" => "required",
-         
-
+        $validator = Validator::make($request->all(), [
+            "order_id" => "required",
+            "pet_id" => "nullable", // Allow pet_id to be null
+            "supply_id" => "nullable", // Allow supply_id to be null
+            "quantity" => "required",
         ]);
-        if($validator->fails()){
-            return response($validator->errors()->all(),422);
+    
+        if ($validator->fails()) {
+            return response($validator->errors()->all(), 422);
         }
-        $order = Order::create($request->all());
-        
+    
+        $order = Order_item::create($request->all());
+    
         $order->save();
-        return response()->json(['message'=> $order])->setStatusCode(200) ;
-  
+        
+        return response()->json(['message' => $order])->setStatusCode(200);
     }
+    
     /**
      * Store a newly created resource in storage.
      */

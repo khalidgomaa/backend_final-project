@@ -17,11 +17,12 @@ class OrderResource extends JsonResource
         // return parent::toArray($request);
         return
         [
-        'id' =>$this->id , 
+        // 'id' =>$this->id , 
         'user_id' =>$this->user_id , 
         'user' =>$this->user, 
+        'total_price' =>$this->total_price, 
         // 'orders__items' =>$this->orders_Items,
-        "pets" => OrderItemResource::collection($this->orders_Items )
+        // "pets" => OrderItemResource::collection($this->orders_Items )
 
         ] ;
     }
