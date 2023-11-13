@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\AppointmentsController;
 use App\Http\Controllers\api\CategoryController;
 use App\Http\Controllers\api\UsersController;
 use App\Http\Controllers\api\VeterinaryCenterController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\api\DoctorController;
 use App\Http\Controllers\api\OrderController;
 use App\Http\Controllers\api\OrderItemController;
 use App\Http\Controllers\api\SupplyController;
+use App\Http\Controllers\api\EmailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,10 +31,7 @@ Route::post('login', [UsersController::class, 'login']);
 Route::post('logout', [UsersController::class, 'logout']);
 Route::apiResource('Categories', CategoryController::class);
 Route::apiResource('VeterinaryCenters', VeterinaryCenterController::class);
-
-
-
-
+Route::get('mycenter', [VeterinaryCenterController::class, 'mycenter'])->middleware('auth:sanctum');
 
 Route::apiResource('supplies', SupplyController::class);
 
@@ -46,3 +45,10 @@ Route::apiResource('orders', OrderController::class);
 // Route::get('order', [OrderController::class , 'index']);
 
 Route::apiResource('orders_items', OrderItemController::class);
+Route::apiResource('appointment', AppointmentsController::class);
+Route::get('appointment', [AppointmentsController::class, 'index'])->middleware('auth:sanctum');
+
+Route::get('accept', [EmailController::class, 'accept'])->middleware('auth:sanctum');
+Route::get('reject', [EmailController::class, 'reject'])->middleware('auth:sanctum');
+Route::get('updateaccept/{appointment}', [AppointmentsController::class, 'updateaccept']);
+Route::get('updatereject/{appointment}', [AppointmentsController::class, 'updatereject']);

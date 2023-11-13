@@ -21,10 +21,13 @@ class VeterinaryCenterResource extends JsonResource
             'street_address' => $this->street_address,
             'governorate' => $this->governorate,
             'about' => $this->about,
+            'open_at' => $this->open_at,
+            'close_at' => $this->close_at,
             'logo' => $this->logo,
             'license' => $this->license,
             'tax_record' => $this->tax_record,
             'commercial_record' => $this->commercial_record,
+            'user_id' => $this->user_id,
         ];
     }
 }

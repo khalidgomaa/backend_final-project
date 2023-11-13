@@ -19,9 +19,18 @@ class VeterinaryCenterController extends Controller
      */
     public function index()
     {
+        // $user = Auth::guard('sanctum')->user()->id;
+        // dd($user);
+
         $veterinary_center = veterinary_center::all();
         return VeterinaryCenterResource::collection($veterinary_center);
-        // return veterinary_center::select('id', 'name')->get();
+    }
+
+    public function mycenter()
+    {
+        $user = Auth::guard('sanctum')->user()->id;
+        $veterinary_center = veterinary_center::with('user')->where('user_id', $user)->get();
+        return VeterinaryCenterResource::collection($veterinary_center);
     }
 
     /**

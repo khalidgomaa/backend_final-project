@@ -11,8 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('pets', function (Blueprint $table) {
-            $table->enum('category', ['Dogs', 'Cats', 'Birds', 'Animal For Breeding']);
+        Schema::table('veterinary_centers', function (Blueprint $table) {
         });
     }
 
@@ -21,7 +20,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('pets', function (Blueprint $table) {
+        Schema::table('veterinary_centers', function (Blueprint $table) {
             //
         });
     }

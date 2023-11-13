@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('doctors', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('image');
-            $table->string('experience');
-            $table->timestamps();
+        Schema::table('doctors', function (Blueprint $table) {
+            $table->foreignId('veterinary_center_id')->references('id')
+                ->on('veterinary_centers')->constrained()->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -25,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('doctors');
+        Schema::table('doctors', function (Blueprint $table) {
+            //
+        });
     }
 };

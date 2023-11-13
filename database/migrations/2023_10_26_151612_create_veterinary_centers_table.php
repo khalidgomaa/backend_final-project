@@ -20,13 +20,12 @@ return new class extends Migration
             $table->string('logo');
             $table->string('about');
             $table->string('license');
-            $table->double('open_at');
-            $table->double('close_at');
+            $table->time('open_at');
+            $table->time('close_at');
             $table->boolean('confirm')->default(0);
             $table->string('tax_record');
             $table->string('commercial_record');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
-
+            $table->foreignId('user_id')->references('id')->on('users')->constrained()->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
