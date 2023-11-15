@@ -27,7 +27,6 @@ class SupplyRequest extends FormRequest
             'price' => 'required|numeric|min:0',
             'quantity' => 'required|integer|min:0',
             'image' => 'required|image|mimes:jpeg,png,gif,jpg',
-            'is_available' => 'boolean',
             'user_id' => 'required|exists:users,id',
         ];
     }

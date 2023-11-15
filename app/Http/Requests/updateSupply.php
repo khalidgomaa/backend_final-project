@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreDoctor extends FormRequest
+class updateSupply extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,11 +22,12 @@ class StoreDoctor extends FormRequest
     public function rules(): array
     {
         return [
-            
-            'name' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,gif,webp',
-            'experience' => 'required',
-            // 'veterinary_center_id'=>'required'
+            'name' => 'required|max:255',
+            'description' => 'required',
+            'price' => 'required|numeric|min:0',
+            'quantity' => 'required|integer|min:0',
+            'image' => 'required|image|mimes:jpeg,png,gif,jpg',
+            'user_id' => 'required|exists:users,id',
         ];
     }
 }

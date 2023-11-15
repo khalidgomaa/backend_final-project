@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->string('image');
             $table->string('category');
-            $table->boolean('is_available')->default(true);
+           
             $table->timestamps();
             $table->foreignId('user_id')->references('id')->on('users')->constrained()->onDelete('cascade')->onUpdate('cascade');
 

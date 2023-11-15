@@ -13,7 +13,7 @@ class Supply extends Model
         'price',
         'quantity',
         'image',
-        'is_available',
+     
         'user_id',
         'category',
     ];

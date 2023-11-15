@@ -62,3 +62,10 @@ Route::post('payment' ,[PaypalController::class ,'payment'])->name('payment');
 Route::get('cancel' ,[PaypalController::class ,'cancel'])->name('payment.cancel');
 Route::get('payment/success' ,[PaypalController::class ,'success'])->name('payment.success');
 // end of paypal
+
+
+
+// routes for emaail appointment 
+Route::get('accept/{id}', [EmailController::class, 'accept'])->middleware('auth:sanctum');
+Route::get('reject/{id}', [EmailController::class, 'reject'])->middleware('auth:sanctum');
+//end routes for emaail appointment 
