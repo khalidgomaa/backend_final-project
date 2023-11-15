@@ -65,8 +65,9 @@ class UsersController extends Controller
             ]);
         }
         $token = $user->createToken($request->email)->plainTextToken;
-
-        return response()->json(['message' => 'Login successful', 'access_token' => $token], 200);
+        // dd($user);
+        $role = $user->role;
+        return response()->json(['role' => $role, 'access_token' => $token], 200);
     }
 
     public function logout(User $user)
@@ -121,6 +122,9 @@ class UsersController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'phone' => $user->phone,
+            'role' => $user->role,
+            'created_at' => $user->created_at,
+            'updated_at' => $user->updated_at
         ];
 
         return response()->json($userData, 200);

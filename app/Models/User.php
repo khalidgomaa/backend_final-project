@@ -58,8 +58,21 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+
     public function feedback()
     {
         return $this->hasMany(Feedback::class);
+    }
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
+    public function veterinary()
+    {
+        return $this->hasMany(Veterinary_center::class);
+    }
+    public function doctor()
+    {
+        return $this->hasMany(Veterinary_center::class);
     }
 }

@@ -22,7 +22,7 @@ class PetController extends Controller
      */
     public function index()
     {
-      
+
         $pets = Pet::with('user')->get();
         return response()->json($pets);
     }
@@ -32,19 +32,19 @@ class PetController extends Controller
      */
     public function store(storePet $request, Pet $pet)
     {
-    
-    $validator = Validator::make($request->all(), $request->rules());
 
-    // if ($validator->fails()) {
-    //     return response()->json(['errors' => $validator->errors()], 400);
-    // }
+        $validator = Validator::make($request->all(), $request->rules());
+
+        // if ($validator->fails()) {
+        //     return response()->json(['errors' => $validator->errors()], 400);
+        // }
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('petimages', 'public');
         } else {
             $imagePath = null;
         }
-    
+
         $pet = Pet::create([
             'age' => $request->input('age'),
             'type' => $request->input('type'),
@@ -55,10 +55,8 @@ class PetController extends Controller
             'user_id' => $request->input('user_id'),
             'category' => $request->input('category'),
         ]);
-         return response()->json(['message' => 'Pet record created successfully'], 201);
+        return response()->json(['message' => 'Pet record created successfully'], 201);
     }
-    
-    
 
     
    
@@ -78,21 +76,10 @@ class PetController extends Controller
     public function update(updatePet $request, string $id)
     {
         $pet = Pet::findOrFail($id);
-    
         $validatedData = $request->validate($request->rules());
-
         if ($request->hasFile('image')) {
-            // Get the old image path
-            // $oldImagePath = $pet->image;
-    
-            // Store the new image
             $imagePath = $request->file('image')->store('petimages', 'public');
             $validatedData['image'] = $imagePath;
-    
-            // Delete the old image if it exists
-            // if ($oldImagePath) {
-            //     Storage::disk('public')->delete($oldImagePath);
-            // }
         } else {
             $imagePath = null;
         }
