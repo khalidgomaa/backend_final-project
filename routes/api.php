@@ -59,7 +59,7 @@ Route::apiResource('supplies', SupplyController::class);
 
 // payment
 
-Route::get('payment' ,[PaypalController::class ,'payment'])->name('payment');
+Route::post('payment' ,[PaypalController::class ,'payment'])->name('payment');
 Route::get('cancel' ,[PaypalController::class ,'cancel'])->name('payment.cancel');
 Route::get('payment/success' ,[PaypalController::class ,'success'])->name('payment.success');
 

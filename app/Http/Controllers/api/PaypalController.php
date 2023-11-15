@@ -23,35 +23,37 @@ class PaypalController extends Controller
         // $order = Order::all();
         // dd($order);
         $data = [];
-        $data['items'] = [
-            [
-                'name' => 'Product 1',
-                'price' => 9.99,
-                'desc'  => 'Description for product 1',
-                'qty' => 1
-            ],
-            [
-                'name' => 'Product 2',
-                'price' => 4.99,
-                'desc'  => 'Description for product 2',
-                'qty' => 2
-            ]
-        ];
-
+        // $data['items'] = [
+        //     [
+        //         'name' => 'Product 1',
+        //         'price' => 9.99,
+        //         'desc'  => 'Description for product 1',
+        //         'qty' => 1
+        //     ],
+        //     [
+        //         'name' => 'Product 2',
+        //         'price' => 4.99,
+        //         'desc'  => 'Description for product 2',
+        //         'qty' => 2
+        //     ]
+        // ];
+        $data['items'] = [];
         $data['invoice_id'] = 1;
         $data['invoice_description'] = "Order #{$data['invoice_id']} Invoice";
         $data['return_url'] = url('http://127.0.0.1:8000/api/payment/success');
         $data['cancel_url'] = url('http://127.0.0.1:8000/api/cancel');
 
-        $total = 0;
-        foreach ($data['items'] as $item) {
-            $total += $item['price'] * $item['qty'];
-        }
+        // $total = 0;
+        // foreach ($data['items'] as $item) {
+        //     $total += $item['price'] * $item['qty'];
+        // }
+        // return response()->json(['message' => $request->total_price], 201);
 
-        $data['total'] = $total;
+        $data['total'] = $request->total_price;
+        // return response()->json(['message' => $data], 201);
 
-        //give a discount of 10% of the order amount
-        $data['shipping_discount'] = round((10 / 100) * $total, 2);
+        // give a discount of 10% of the order amount
+        // $data['shipping_discount'] = round((10 / 100) * $total, 2);
 
         $provider = new ExpressCheckout;
        
@@ -60,7 +62,7 @@ class PaypalController extends Controller
         $response = $provider->setExpressCheckout($data, true);
 
         // This will redirect user to PayPal
-        return redirect($response['paypal_link']);
+        return response()->json($response['paypal_link']);
     }
 
     /**
@@ -81,7 +83,8 @@ class PaypalController extends Controller
         // dd($response);
         if(in_array(strtoupper($response['ACK']),['SUCCESS','SUCCESSWITHWARNING'])){
             // response()->json('your payment was successfully ');
-            dd('success ya 2lb a5oooook');
+            return redirect("http://localhost:4200/");
+            // dd('success ya 2lb a5oooook');
         }else{
             dd('faild ya 2lb a5oooook');
 

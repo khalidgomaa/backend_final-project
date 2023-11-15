@@ -16,15 +16,14 @@ class PetController extends Controller
 
     function __construct()
     {
-        $this->middleware("auth:sanctum")->only(["store" ,"update"  ,"destroy"]);
+        $this->middleware('auth:sanctum',['is_admin'])->only(["store" ,"update"  ,"destroy"]);
         
     }
-    /**
+    /**s
      * Display a listing of the resource.
      */
     public function index()
     {
-      
         $pets = Pet::with('user')->get();
         return response()->json($pets);
     }

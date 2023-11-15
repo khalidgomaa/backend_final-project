@@ -17,8 +17,9 @@ class is_admin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::user()->role != "admin"){
-            return response()->json(["message"=>"Not Authoriztion"]);
+
+        if(Auth::guard('sanctum')->user()->role != "admin"){
+            return response()->json(["message"=>"Not Admin"]);
         }
         return $next($request);
     }
