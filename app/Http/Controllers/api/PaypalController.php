@@ -82,9 +82,9 @@ class PaypalController extends Controller
         // dd($response);
         if(in_array(strtoupper($response['ACK']),['SUCCESS','SUCCESSWITHWARNING'])){
             // response()->json('your payment was successfully ');
-            return redirect("http://localhost:4200/");
+            return redirect("http://localhost:4200/success_payment");
         }else{
-            dd('faild ya 2lb a5oooook');
+            return redirect("http://localhost:4200/");
 
             // response()->json('please try later ');
         }

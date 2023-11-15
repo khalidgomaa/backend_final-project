@@ -24,7 +24,7 @@ class StoreVetCenterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ["required", Rule::unique('categories')->ignore($this->category), "min:3"],
+            'name' => ["required", "min:3"],
             'logo' => 'image|mimes:png,jpg,jpeg,gif',
             'license' => 'image|mimes:png,jpg,jpeg,gif',
             'tax_record' => 'image|mimes:png,jpg,jpeg,gif',
@@ -32,8 +32,8 @@ class StoreVetCenterRequest extends FormRequest
             'street_address' => 'required|min:5',
             'governorate' => 'required|min:3',
             'about' => 'required|min:20',
-            'open_at' => 'required',
-            'close_at' => 'required'
+            'open_at' => 'required|date_format:h:i A',
+            'close_at' => 'required|date_format:h:i A'
         ];
     }
 }
