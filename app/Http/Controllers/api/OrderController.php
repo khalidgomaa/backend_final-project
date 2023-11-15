@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 class OrderController extends Controller
 {
+    function __construct()
+    {
+         $this->middleware("auth:sanctum")->only(["store" ,"update","destroy"]);
+         
+    }
     /**
      * Display a listing of the resource.
      */

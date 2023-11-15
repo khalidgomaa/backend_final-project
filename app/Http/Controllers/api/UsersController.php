@@ -81,20 +81,14 @@ class UsersController extends Controller
 
     public function update(Request $request)
     {
-        // Ensure the user is authenticated
-        // if (!Auth::check()) {
-        //     return response()->json(["error" => "User not authenticated"], 401);
-        // }
-    
-        $user = Auth::user();
-    
-        // Validate the form data
+        $user = Auth::guard('sanctum')->user();
+     
         $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'old_password' => 'required|string',
-            'password' => 'nullable|string|min:8|confirmed', // 'confirmed' checks for password_confirmation field
+            'email' => 'required',
+            'old_password' => 'required',
+            'password' => 'string', // 'confirmed' checks for password_confirmation field
         ]);
     
         if (!Hash::check($request->input('old_password'), $user->password)) {
@@ -137,4 +131,34 @@ class UsersController extends Controller
         $users = User::all();
         return response()->json($users);
     }
+
+// destory user
+    public function destroy(Request $request, $id)
+{
+    // Find the user by ID
+    $user = User::find($id);
+    // return response()->json(["jjjjjjjjjj" =>  $user]);
+    // Check if the user exists
+    if (!$user) {
+        return response()->json(["error" => "User not found"], 404);
+    }
+
+    // Check if the authenticated user has permission to delete the user
+    $authenticatedUser = $request->user();
+    if ($authenticatedUser->id != $user->id && $authenticatedUser->role != 'admin') {
+        return response()->json(["error" => "Permission denied"], 403);
+    }
+
+    // Delete the user
+    $user->delete();
+
+    // Logout the user if they are deleting their own account
+    if ($authenticatedUser->id == $user->id) {
+        $token = $user->currentAccessToken();
+        $token->delete();
+    }
+
+    return response()->json(["message" => "User deleted successfully"], 200);
+}
+
 }

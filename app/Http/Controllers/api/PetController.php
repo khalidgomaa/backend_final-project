@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\Validator;
 
 class PetController extends Controller
 {
-    // function __construct()
-    // {
-    //     $this->middleware("auth:sanctum")->only(["store" ,"update,destroy"]);
+   function __construct()
+   {
+        $this->middleware("auth:sanctum")->only(["store" ,"update","destroy"]);
         
-    // }
+   }
     /**
      * Display a listing of the resource.
      */
@@ -61,13 +61,16 @@ class PetController extends Controller
     
 
     
-    public function show(string $id)
-    {
-        $pet = Pet::findOrFail($id);
+   
+      public function show(string $id)
+{
+    $pet = Pet::with('user')->findOrFail($id);
+
+    return response()->json($pet);
+}
 
 
-        return response()->json($pet);
-    }
+
 
     /**
      * Update the specified resource in storage.

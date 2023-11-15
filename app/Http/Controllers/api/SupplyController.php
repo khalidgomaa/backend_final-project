@@ -1,8 +1,8 @@
 <?php
-
 namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller; 
 use App\Http\Requests\SupplyRequest;
+use App\Http\Requests\updateSupply;
 use Illuminate\Http\Request;
 use App\Models\Supply;
 use Illuminate\Support\Facades\Validator;
@@ -17,25 +17,21 @@ class SupplyController extends Controller
     }
 
     // Show a specific supply
-    public function show($id)
+    public function show(string $id)
     {
-        return Supply::find($id);
+        $supply = Supply::findOrFail($id);
+
+
+        return response()->json($supply);
     }
 
-    // Create a new supply
-    // public function store(Request $request)
-    // {
-    //     // Validation and saving logic
-    // }
+    
     public function store(SupplyRequest $request, Supply $supply)
     {
     
     $validator = Validator::make($request->all(), $request->rules());
 
-    // if ($validator->fails()) {
-    //     return response()->json(['errors' => $validator->errors()], 400);
-    // }
-
+   
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('supplyimages', 'public');
         } else {
@@ -49,21 +45,65 @@ class SupplyController extends Controller
             'category' => $request->input('category'),
             'image' => $imagePath,
             'quantity' => $request->input('quantity'),
-            'is_available' => $request->input('is_available'),
+            
+            
             'user_id' => $request->input('user_id'),
         ]);
          return response()->json(['message' => 'Supply record created successfully'], 201);
     }
 
     // Edit an existing supply
-    public function update(Request $request, $id)
+    public function update(updateSupply $request, $id)
     {
-        // Validation and updating logic
+       
+        $supply=Supply::findOrFail($id); 
+        $validateData=$request->validate($request->rules());
+        //handle image file
+        if($request->hasFile('image')){
+            $imagePath=$request->file('image')->store('supplyimages','public');
+            $validateData['image']=$imagePath;
+        }
+        else
+        {
+            //handle if no image 
+            $imagePath['image']=null;
+        }
+        
+
+        $supply->update( $validateData);
+         
+            
+    return response()->json(['message' => 'supply updated successfully']);
+       
+     
+
+
     }
 
     // Delete a supply
-    public function destroy($id)
-    {
-        // Deletion logic
+    
+    
+        public function destroy($id,Request $request){
+
+        
+       
+            $supply=Supply::find($id);
+            if (!$supply) {
+                return response()->json(['error' => 'supplly not found'], 404);
+            }
+        
+            // Delete the image from the folder if it exists
+            if($supply->image) {
+                 $imagePath = public_path('storage/' . $supply->image);
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                } 
+            }  
+        
+               //delete doctor
+              
+               $supply->delete();
+              return response()->json(['message' => 'supply deleted successfully'],200);
+        
+        }
     }
-}

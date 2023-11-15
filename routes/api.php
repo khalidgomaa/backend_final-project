@@ -10,7 +10,7 @@ use App\Http\Controllers\api\OrderController;
 use App\Http\Controllers\api\OrderItemController;
 use App\Http\Controllers\api\SupplyController;
 use App\Http\Controllers\api\FeedbackController;
-
+use App\Http\Controllers\api\PaypalController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,6 +28,10 @@ Route::post('register' , [UsersController::class , 'register']);
 Route::post('login' , [UsersController::class , 'login']);
 Route::post('logout' , [UsersController::class , 'logout']);
 Route::put('update_user' , [UsersController::class , 'update']);
+Route::get('users' , [UsersController::class , 'index']);
+Route::delete('users/{id}', [UsersController::class, 'destroy'])->middleware(['auth:sanctum']);
+
+
 
 Route::apiResource('feedbacks', FeedbackController::class);
 
@@ -53,3 +57,8 @@ Route::apiResource('orders_items', OrderItemController::class);
 
 Route::apiResource('VeterinaryCenters', VeterinaryCenterController::class);
 
+// apis related to paypal
+Route::post('payment' ,[PaypalController::class ,'payment'])->name('payment');
+Route::get('cancel' ,[PaypalController::class ,'cancel'])->name('payment.cancel');
+Route::get('payment/success' ,[PaypalController::class ,'success'])->name('payment.success');
+// end of paypal

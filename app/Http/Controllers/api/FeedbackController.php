@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class FeedbackController extends Controller
 {
+    function __construct()
+    {
+         $this->middleware("auth:sanctum")->only(["store" ,"update","destroy"]);
+         
+    }
     public function index()
     {
         $feedbacks = Feedback::with('user')->get();
