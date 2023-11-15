@@ -12,16 +12,17 @@ use Illuminate\Support\Facades\Mail;
 
 class EmailController extends Controller
 {
-    public function accept()
+    public function accept($id)
     {
-        $appointment = Appointment::with('user')->first();
+        $appointment = Appointment::where('id', $id)->first();
+        // dd($appointment->user->email);
         Mail::to($appointment->user->email)->send(new EmailAppointment());
         return response()->json("appointment success");
     }
 
-    public function reject()
+    public function reject($id)
     {
-        $appointment = Appointment::with('user')->first();
+        $appointment = Appointment::where('id', $id)->first();
         Mail::to($appointment->user->email)->send(new RejectMail());
         return response()->json("appointment Reject");
     }

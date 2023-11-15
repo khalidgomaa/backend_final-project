@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Appointment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -18,11 +19,14 @@ class EmailAppointment extends Mailable
     public $user;
     /**
      * Create a new message instance.
+     *
+     * @param string $time
      */
     public function __construct()
     {
         $this->user = Auth::user();
     }
+
 
     /**
      * Get the message envelope.
@@ -41,6 +45,7 @@ class EmailAppointment extends Mailable
     {
         return new Content(
             view: 'email.accept',
+
         );
     }
 

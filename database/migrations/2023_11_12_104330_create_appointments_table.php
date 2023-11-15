@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->date('date');
-            $table->time('time');
+            $table->string('time');
             $table->string('pet_type');
             $table->foreignId('user_id')->references('id')->on('users')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('veternary_id')->references('id')->on('veterinary_centers')->onDelete('cascade')->onUpdate('cascade');

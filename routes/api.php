@@ -12,6 +12,7 @@ use App\Http\Controllers\api\OrderController;
 use App\Http\Controllers\api\OrderItemController;
 use App\Http\Controllers\api\SupplyController;
 use App\Http\Controllers\api\EmailController;
+use App\Models\Veterinary_center;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,10 @@ Route::post('logout', [UsersController::class, 'logout']);
 Route::apiResource('Categories', CategoryController::class);
 Route::apiResource('VeterinaryCenters', VeterinaryCenterController::class);
 Route::get('mycenter', [VeterinaryCenterController::class, 'mycenter'])->middleware('auth:sanctum');
+Route::get('anycenter/{id}', [VeterinaryCenterController::class, 'anycenter']);
+Route::get('allcenter', [VeterinaryCenterController::class, 'allcenter']);
+Route::get('currentcenterdoctor', [DoctorController::class, 'currentcenterdoctor']);
+
 
 Route::apiResource('supplies', SupplyController::class);
 
@@ -41,14 +46,24 @@ Route::apiResource('pets', PetController::class);
 
 Route::apiResource('doctors', DoctorController::class);
 
+Route::get('mydoctors', [DoctorController::class, 'mycenterdoctor'])->middleware('auth:sanctum');
+Route::get('allmydoctors', [DoctorController::class, 'allcenterdoctor']);
+
+
 Route::apiResource('orders', OrderController::class);
 // Route::get('order', [OrderController::class , 'index']);
 
 Route::apiResource('orders_items', OrderItemController::class);
 Route::apiResource('appointment', AppointmentsController::class);
 Route::get('appointment', [AppointmentsController::class, 'index'])->middleware('auth:sanctum');
+Route::get('allappointments', [AppointmentsController::class, 'allappoints']);
 
-Route::get('accept', [EmailController::class, 'accept'])->middleware('auth:sanctum');
-Route::get('reject', [EmailController::class, 'reject'])->middleware('auth:sanctum');
+Route::get('accept/{id}', [EmailController::class, 'accept'])->middleware('auth:sanctum');
+Route::get('reject/{id}', [EmailController::class, 'reject'])->middleware('auth:sanctum');
 Route::get('updateaccept/{appointment}', [AppointmentsController::class, 'updateaccept']);
 Route::get('updatereject/{appointment}', [AppointmentsController::class, 'updatereject']);
+Route::delete('veterinary-centers/{id}/doctors/{doctorId}', [DoctorController::class, 'destroy'])->middleware('auth:sanctum');
+
+
+Route::get('updateacceptvet/{id}', [Veterinary_center::class, 'updateacceptvet']);
+Route::get('updaterejectvet/{id}', [Veterinary_center::class, 'updaterejectvet']);

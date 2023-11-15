@@ -27,7 +27,11 @@ class VeterinaryCenterResource extends JsonResource
             'license' => $this->license,
             'tax_record' => $this->tax_record,
             'commercial_record' => $this->commercial_record,
+            'updated_at' => $this->updated_at,
+            'created_at' => $this->created_at,
+            'status' => $this->status,
             'user_id' => $this->user_id,
+            'doctors' => $this->doctors,
         ];
     }
 }

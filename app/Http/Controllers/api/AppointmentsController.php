@@ -11,23 +11,27 @@ use Illuminate\Support\Facades\Auth;
 
 class AppointmentsController extends Controller
 {
+
+    function __construct()
+    {
+        $this->middleware("auth:sanctum")->only(["store", "update", "destroy"]);
+    }
+
     /**
      * Display a listing of the resource.
      */
-    // public function index()
-    // {
-    //     // Auth::guard('sanctum')->user()->id
-    //     // $appointments = Appointment::with('veterinary')->get();
-
-    //     $veterinary = Veterinary_center::select('id')->get();
-    //     return response()->json($veterinary['id']);
-    // }
 
     public function index()
     {
         $user = Auth::guard('sanctum')->user()->id;
         $firstVeterinaryId = Veterinary_center::where('user_id', $user)->first()->id;
         $appointments = Appointment::with('user')->where('veternary_id', $firstVeterinaryId)->get();
+        return response()->json($appointments);
+    }
+
+    public function allappoints()
+    {
+        $appointments = Appointment::with('user', 'veterinary')->get();
         return response()->json($appointments);
     }
 
@@ -41,7 +45,7 @@ class AppointmentsController extends Controller
             [
                 "pet_type" => "required",
                 "date" => 'required|after_or_equal:' . date('Y-m-d'),
-                "time" => "required",
+                "time" => "required|date_format:h:i A",
                 "user_id" => "required",
                 "veternary_id" => "required",
             ]
@@ -83,10 +87,10 @@ class AppointmentsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Appointment $appointment)
+    public function destroy($id)
     {
-        // $appointment->delete();
-        // return response()->json(['message'=> "Deleted Successfully"])->setStatusCode(201);
-
+        $appointment = Appointment::find($id);
+        $appointment->delete();
+        return response()->json(['message' => "Deleted Successfully"])->setStatusCode(201);
     }
 }

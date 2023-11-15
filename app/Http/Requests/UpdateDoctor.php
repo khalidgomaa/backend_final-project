@@ -22,12 +22,11 @@ class UpdateDoctor extends FormRequest
     public function rules(): array
     {
         return [
-            
+
             'image' => 'sometimes|required',
-   
             'name' => 'sometimes|required',
             'experience' => 'sometimes|required',
-            'veterinary_center_id'=>'sometimes|required'
+            // 'veterinary_center_id'=>'sometimes|required'
         ];
     }
 }

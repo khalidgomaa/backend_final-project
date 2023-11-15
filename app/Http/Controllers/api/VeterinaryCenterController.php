@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Auth;
 
 class VeterinaryCenterController extends Controller
 {
+
+    function __construct()
+    {
+        $this->middleware("auth:sanctum")->only(["store", "update"]);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -33,13 +39,44 @@ class VeterinaryCenterController extends Controller
         return VeterinaryCenterResource::collection($veterinary_center);
     }
 
+    public function anycenter($id)
+    {
+        // $user = Auth::guard('sanctum')->user()->id;
+        $veterinary_center = veterinary_center::with('doctors')->where('user_id', $id)->get();
+        return VeterinaryCenterResource::collection($veterinary_center);
+    }
+
+    public function allcenter()
+    {
+        $veterinary_center = veterinary_center::with('doctors')->get();
+        return VeterinaryCenterResource::collection($veterinary_center);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreVetCenterRequest $request)
     {
 
-        $validatedData = $request->validated();
+        // $validatedData = $request->validated();
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => ["required", "min:3"],
+                'logo' => 'image|mimes:png,jpg,jpeg,gif',
+                'license' => 'image|mimes:png,jpg,jpeg,gif',
+                'tax_record' => 'image|mimes:png,jpg,jpeg,gif',
+                'commercial_record' => 'image|mimes:png,jpg,jpeg,gif',
+                'street_address' => 'required|min:5',
+                'governorate' => 'required|min:3',
+                'about' => 'required|min:20',
+                'open_at' => 'required|date_format:h:i A',
+                'close_at' => 'required|date_format:h:i A'
+            ]
+        );
+        if ($validator->fails()) {
+            return response($validator->errors()->all(), 422);
+        }
         $data = $request->all();
         $logofile = Storage::putfile("/public/logoImage", $data['logo']);
         $data['logo'] = str_replace("public/", "storage/", "$logofile");
@@ -70,79 +107,28 @@ class VeterinaryCenterController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    // public function update(Request $request, veterinary_center $veterinary_center, string $id)
-    // {
-    //     $veterinary_center = veterinary_center::find($id);
-    //     $data = $request->all();
-    //     if ($request->hasFile('logo')) {
-    //         $logoimagePath = $request->file('logo')->store('LogoImage', 'public');
-    //         $veterinary_center->update(['logo' => $logoimagePath]);
-    //     }
-    //     if ($request->hasFile('license')) {
-    //         $licenseimagePath = $request->file('license')->store('LicenseImage', 'public');
-    //         $veterinary_center->update(['license' => $licenseimagePath]);
-    //     }
-    //     if ($request->hasFile('tax_record')) {
-    //         $taximagePath = $request->file('tax_record')->store('TaxRecordImage', 'public');
-    //         $veterinary_center->update(['tax_record' => $taximagePath]);
-    //     }
-    //     if ($request->hasFile('commercial_record')) {
-    //         $oldImagePath = $veterinary_center->commrecimagePath;
-    //         if ($oldImagePath) {
-    //             $imagePath = null;
-    //         } else {
-    //             $imagePath = null;
-    //         }
-
-    //         $commrecimagePath = $request->file('commercial_record')->store('CommercialRecordImage', 'public');
-    //         $veterinary_center->update(['commercial_record' => $commrecimagePath]);
-
-    //         $imagePath = $request->file('image')->store('petimages', 'public');
-    //         $validatedData['image'] = $imagePath;
-    //     }
-    //     // Update other fields from the request data (assuming the fields have the correct names)
-    //     $veterinary_center->name = $request->input('name');
-    //     $veterinary_center->street_address = $request->input('street_address');
-    //     $veterinary_center->governorate = $request->input('governorate');
-    //     $veterinary_center->about = $request->input('about');
-
-
-    //     $veterinary_center->update([$veterinary_center]);
-    //     return new VeterinaryCenterResource($veterinary_center);
-    // }
-
-
-
 
     public function update(Request $request, veterinary_center $veterinary_center, string $id)
     {
-        $veterinary_center = veterinary_center::find($id);
+        $veterinary_center = veterinary_center::findOrFail($id);
         $data = $request->all();
 
         // Handle file uploads
         if ($request->hasFile('logo')) {
-            $logoImagePath = $request->file('logo')->store('LogoImage', 'public');
-            $veterinary_center->logo = str_replace("public/", "storage/", $logoImagePath);
+            $logofile = Storage::putfile("/public/logoImage", $data['logo']);
+            $data['logo'] = str_replace("public/", "storage/", "$logofile");
         }
         if ($request->hasFile('license')) {
-            $licenseImagePath = $request->file('license')->store('LicenseImage', 'public');
-            $veterinary_center->license = str_replace("public/", "storage/", $licenseImagePath);
+            $licensefile = Storage::putfile("/public/licenseImage", $data['license']);
+            $data['license'] = str_replace("public/", "storage/", "$licensefile");
         }
         if ($request->hasFile('tax_record')) {
-            $taxImagePath = $request->file('tax_record')->store('TaxRecordImage', 'public');
-            $veterinary_center->tax_record = str_replace("public/", "storage/", $taxImagePath);
+            $taxRecordfile = Storage::putfile("/public/taxRecordImage", $data['tax_record']);
+            $data['tax_record'] = str_replace("public/", "storage/", "$taxRecordfile");
         }
         if ($request->hasFile('commercial_record')) {
-            // Delete old commrec image if exists
-            if ($veterinary_center->commercial_record) {
-                Storage::delete(str_replace("storage/", "public/", $veterinary_center->commercial_record));
-                $commrecImagePath = $request->file('commercial_record')->store('CommercialRecordImage', 'public');
-                $commrecfile = Storage::putfile("/public/commrecImage", $data['commercial_record']);
-                $data['commercial_record'] = str_replace("public/", "storage/", "$commrecfile");
-            }
-
-            // Store new commrec image
-            $veterinary_center->commercial_record = str_replace("public/", "storage/", $commrecImagePath);
+            $commrecfile = Storage::putfile("/public/commrecImage", $data['commercial_record']);
+            $data['commercial_record'] = str_replace("public/", "storage/", "$commrecfile");
         }
 
         // Update other fields from the request data (assuming the fields have the correct names)
@@ -150,64 +136,31 @@ class VeterinaryCenterController extends Controller
         $veterinary_center->street_address = $request->input('street_address');
         $veterinary_center->governorate = $request->input('governorate');
         $veterinary_center->about = $request->input('about');
+        $veterinary_center->open_at = $request->input('open_at');
+        $veterinary_center->close_at = $request->input('close_at');
 
         // Save the changes to the database
-        $veterinary_center->save();
+        $veterinary_center->update($data);
 
-        return new VeterinaryCenterResource($veterinary_center);
+        return response()->json(['message' => 'Vet updated successfully']);
     }
 
 
+    public function updateacceptvet(veterinary_center $veterinary_center)
+    {
+        $veterinary_center['status'] = 'approved';
+        $veterinary_center->update();
+        return response()->json(['message' => 'Update accepted successfully']);
+    }
+
+    public function updaterejecttvet(veterinary_center $veterinary_center)
+    {
+        $veterinary_center['status'] = 'unapproved';
+        $veterinary_center->update();
+        return response()->json(['message' => 'Update rejected successfully']);
+    }
 
 
-    // public function update(Request $request, string $id)
-    // {
-    //     $veterinary_center = veterinary_center::findOrFail($id);
-
-    //     // Validate the request data
-    //     $validatedData = $request->validate([
-
-    //         'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    //         'license' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    //         'tax_record' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    //         'commercial_record' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    //     ]);
-
-    //     // Update non-file fields
-    //     $veterinary_center->update($validatedData);
-
-    //     // Handle file uploads
-    //     if ($request->hasFile('logo')) {
-    //         $logoFilePath = $request->file('logo')->store('public/logoImage');
-    //         $veterinary_center->logo = str_replace("public/", "storage/", $logoFilePath);
-    //         $veterinary_center->save();
-    //     }
-
-    //     if ($request->hasFile('license')) {
-    //         $licenseFilePath = $request->file('license')->store('public/licenseImage');
-    //         $veterinary_center->license = str_replace("public/", "storage/", $licenseFilePath);
-    //         $veterinary_center->save();
-    //     }
-
-    //     if ($request->hasFile('tax_record')) {
-    //         $taxRecordFilePath = $request->file('tax_record')->store('public/taxRecordImage');
-    //         $veterinary_center->tax_record = str_replace("public/", "storage/", $taxRecordFilePath);
-    //         $veterinary_center->save();
-    //     }
-
-    //     if ($request->hasFile('commercial_record')) {
-    //         $commrecFilePath = $request->file('commercial_record')->store('public/commrecImage');
-    //         $veterinary_center->commercial_record = str_replace("public/", "storage/", $commrecFilePath);
-    //         $veterinary_center->save();
-    //     }
-
-    //     $veterinary_center->update([$veterinary_center]);
-    //     return new VeterinaryCenterResource($veterinary_center);
-    // }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(veterinary_center $veterinary_center, string $id)
     {
         $veterinary_center = veterinary_center::find($id);

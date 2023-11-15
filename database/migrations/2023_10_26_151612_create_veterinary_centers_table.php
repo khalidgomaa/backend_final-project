@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('logo');
             $table->string('about');
             $table->string('license');
-            $table->time('open_at');
-            $table->time('close_at');
+            $table->string('open_at');
+            $table->string('close_at');
             $table->boolean('confirm')->default(0);
             $table->string('tax_record');
             $table->string('commercial_record');
