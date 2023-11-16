@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\PetResource;
-use Illuminate\Http\Request;
+
 use App\Models\Pet;
 use App\Http\Requests\storePet;
 use App\Http\Requests\updatePet;

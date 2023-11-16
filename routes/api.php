@@ -5,7 +5,7 @@ use App\Http\Controllers\api\AppointmentsController;
 use App\Http\Controllers\api\UsersController;
 use App\Http\Controllers\api\VeterinaryCenterController;
 use App\Http\Controllers\api\PetController;
-use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\DoctorController;
 use App\Http\Controllers\api\OrderController;
@@ -75,6 +75,8 @@ Route::get('appointment', [AppointmentsController::class, 'index'])->middleware(
 // end  orders
 
 Route::get('allappointments', [AppointmentsController::class, 'allappoints']);
+Route::get('MyAppointment', [AppointmentsController::class, 'MyAppointment']);
+
 
 Route::get('accept/{id}', [EmailController::class, 'accept'])->middleware('auth:sanctum');
 Route::get('reject/{id}', [EmailController::class, 'reject'])->middleware('auth:sanctum');
@@ -83,8 +85,8 @@ Route::get('updatereject/{appointment}', [AppointmentsController::class, 'update
 Route::delete('veterinary-centers/{id}/doctors/{doctorId}', [DoctorController::class, 'destroy'])->middleware('auth:sanctum');
 
 
-Route::get('updateacceptvet/{id}', [Veterinary_center::class, 'updateacceptvet']);
-Route::get('updaterejectvet/{id}', [Veterinary_center::class, 'updaterejectvet']);
+Route::get('updateacceptvet/{id}', [VeterinaryCenterController::class, 'updateacceptvet']);
+Route::get('updaterejectvet/{id}', [VeterinaryCenterController::class, 'updaterejectvet']);
 
 
 

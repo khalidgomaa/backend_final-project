@@ -6,8 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\EmailAppointment;
 use App\Mail\RejectMail;
 use App\Models\Appointment;
-use App\Models\Veterinary_center;
-use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Mail;
 
 class EmailController extends Controller

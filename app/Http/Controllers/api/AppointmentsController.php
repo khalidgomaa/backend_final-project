@@ -4,7 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
-use App\Models\Veterinary_center;
+use App\Models\veterinary_center;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +24,7 @@ class AppointmentsController extends Controller
     public function index()
     {
         $user = Auth::guard('sanctum')->user()->id;
-        $firstVeterinaryId = Veterinary_center::where('user_id', $user)->first()->id;
+        $firstVeterinaryId = veterinary_center::where('user_id', $user)->first()->id;
         $appointments = Appointment::with('user')->where('veternary_id', $firstVeterinaryId)->get();
         return response()->json($appointments);
     }
@@ -32,6 +32,12 @@ class AppointmentsController extends Controller
     public function allappoints()
     {
         $appointments = Appointment::with('user', 'veterinary')->get();
+        return response()->json($appointments);
+    }
+    public function MyAppointment()
+    {
+        $user = Auth::guard('sanctum')->user()->id;
+        $appointments = Appointment::where('user_id', $user)->get();
         return response()->json($appointments);
     }
 
