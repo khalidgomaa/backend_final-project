@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('price');
             $table->enum('operation', ['sell' , 'adopt']);
             $table->foreignId('user_id')->references('id')->on('users')->constrained()->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('category_id')->references('id')->on('categories')->constrained()->onDelete('cascade')->onUpdate('cascade');
 
         });
     }
