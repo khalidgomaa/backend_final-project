@@ -11,7 +11,7 @@ class UpdateDoctor extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class UpdateDoctor extends FormRequest
     public function rules(): array
     {
         return [
-            //
+
+            'image' => 'sometimes|required',
+            'name' => 'sometimes|required',
+            'experience' => 'sometimes|required',
+            // 'veterinary_center_id'=>'sometimes|required'
         ];
     }
 }

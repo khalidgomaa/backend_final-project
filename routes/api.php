@@ -32,8 +32,8 @@ Route::middleware('auth:sanctum')->get('/user', [UsersController::class, 'getuse
 Route::post('register', [UsersController::class, 'register']);
 Route::post('login', [UsersController::class, 'login']);
 Route::post('logout', [UsersController::class, 'logout']);
-Route::put('update_user' , [UsersController::class , 'update']);
-Route::get('users' , [UsersController::class , 'index']);
+Route::put('update_user', [UsersController::class, 'update']);
+Route::get('users', [UsersController::class, 'index']);
 Route::delete('users/{id}', [UsersController::class, 'destroy'])->middleware(['auth:sanctum']);
 
 
@@ -49,7 +49,7 @@ Route::get('allcenter', [VeterinaryCenterController::class, 'allcenter']);
 Route::get('currentcenterdoctor', [DoctorController::class, 'currentcenterdoctor']);
 
 
-// for feedbacks 
+// for feedbacks
 Route::apiResource('supplies', SupplyController::class);
 
 Route::apiResource('pets', PetController::class);
@@ -83,14 +83,14 @@ Route::get('updatereject/{appointment}', [AppointmentsController::class, 'update
 Route::delete('veterinary-centers/{id}/doctors/{doctorId}', [DoctorController::class, 'destroy'])->middleware('auth:sanctum');
 
 
-Route::get('updateacceptvet/{id}', [Veterinary_center::class, 'updateacceptvet']);
-Route::get('updaterejectvet/{id}', [Veterinary_center::class, 'updaterejectvet']);
+Route::get('updateacceptvet/{id}', [VeterinaryCenterController::class, 'updateacceptvet']);
+Route::get('updaterejectvet/{id}', [VeterinaryCenterController::class, 'updaterejectvet']);
 
 
 
 
 // apis related to paypal
-Route::post('payment' ,[PaypalController::class ,'payment'])->name('payment');
-Route::get('cancel' ,[PaypalController::class ,'cancel'])->name('payment.cancel');
-Route::get('payment/success' ,[PaypalController::class ,'success'])->name('payment.success');
+Route::post('payment', [PaypalController::class, 'payment'])->name('payment');
+Route::get('cancel', [PaypalController::class, 'cancel'])->name('payment.cancel');
+Route::get('payment/success', [PaypalController::class, 'success'])->name('payment.success');
 // end of paypal

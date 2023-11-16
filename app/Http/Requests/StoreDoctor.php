@@ -11,7 +11,7 @@ class StoreDoctor extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class StoreDoctor extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            
+            'name' => 'required',
+            'image' => 'required',
+            'experience' => 'required',
+            'veterinary_center_id'=>'required'
         ];
     }
 }
