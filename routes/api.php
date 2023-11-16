@@ -94,3 +94,8 @@ Route::post('payment' ,[PaypalController::class ,'payment'])->name('payment');
 Route::get('cancel' ,[PaypalController::class ,'cancel'])->name('payment.cancel');
 Route::get('payment/success' ,[PaypalController::class ,'success'])->name('payment.success');
 // end of paypal
+
+
+// update vet
+Route::get('updateacceptvet/{id}', [VeterinaryCenterController::class, 'updateacceptvet']);
+Route::get('updaterejectvet/{id}', [VeterinaryCenterController::class, 'updaterejectvet']);
