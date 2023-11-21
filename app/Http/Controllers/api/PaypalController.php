@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order;
-use App\Models\User;
+
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+
 use Srmklive\PayPal\Services\ExpressCheckout;
 
 class PaypalController extends Controller
@@ -19,7 +18,7 @@ class PaypalController extends Controller
 
     public function payment(Request $request)
     {
-        $user = Auth::guard('sanctum')->user();
+        // $user = Auth::guard('sanctum')->user();
         // $order = Order::all();
         // dd($order);
         $data = [];
@@ -62,7 +61,8 @@ class PaypalController extends Controller
         $response = $provider->setExpressCheckout($data, true);
 
         // This will redirect user to PayPal
-        return response()->json($response['paypal_link']);    }
+        return response()->json($response['paypal_link']);   
+     }
 
     /**
      * Store a newly created resource in storage.

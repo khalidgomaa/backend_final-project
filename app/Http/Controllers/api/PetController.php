@@ -22,7 +22,7 @@ class PetController extends Controller
     public function index()
     {
 
-        $pets = Pet::with('user')->get();
+        $pets = Pet::with('user')->orderBy('id' , 'DESC')->get();
         return response()->json($pets);
     }
 

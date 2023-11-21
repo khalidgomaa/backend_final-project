@@ -14,7 +14,7 @@ use App\Http\Controllers\api\SupplyController;
 use App\Http\Controllers\api\FeedbackController;
 use App\Http\Controllers\api\PaypalController;
 use App\Http\Controllers\api\EmailController;
-use App\Models\Veterinary_center;
+
 
 /*
 |--------------------------------------------------------------------------
