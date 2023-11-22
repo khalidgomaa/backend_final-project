@@ -28,8 +28,8 @@ class DoctorController extends Controller
 
     public function index()
     {
-        $doctor = Doctor::all();
-        return DoctorResource::collection($doctor);
+        $doctors = Doctor::with('veterinary_center')->get();
+        return response()->json($doctors);
     }
 
     public function mycenterdoctor()
@@ -81,7 +81,7 @@ class DoctorController extends Controller
             'name' => $request->input('name'),
             'experience' => $request->input('experience'),
             'image' => $imagePath,
-            'veterinary_center_id' => $request->input('veterinary_center_id')
+             'veterinary_center_id' => $request->input('veterinary_center_id')
         ]);
         return new DoctorResource($doctor);
         return response()->json(['message' => 'doctor record created successfully'], 201);
@@ -173,4 +173,28 @@ class DoctorController extends Controller
 
         return response()->json(['message' => 'Doctor deleted successfully']);
     }
+
+    public function adminDeleteDoctor($id, Request $request)
+    {
+        $doctor = Doctor::find($id);
+    
+        if (!$doctor) {
+            return response()->json(['error' => 'Doctor not found'], 404);
+        }
+    
+        // Delete the image from the folder if it exists
+        if ($doctor->image) {
+            $imagePath = public_path('storage/' . $doctor->image);
+    
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+    
+        // Perform the actual deletion
+        $doctor->delete();
+    
+        return response()->json(['message' => 'Doctor deleted successfully']);
+    }
+    
 }

@@ -10,7 +10,7 @@ class FeedbackController extends Controller
 {
     function __construct()
     {
-         $this->middleware("auth:sanctum")->only(["store" ,"update","destroy"]);
+         $this->middleware("auth:sanctum")->only(["store" ,"destroy"]);
          
     }
     public function index()
@@ -35,7 +35,7 @@ class FeedbackController extends Controller
        // Optionally, you can return the created resource as a response
 return response()->json(['message' => 'Resource stored successfully', 'data' => $feedback]);
    }
-
+ 
  /**
      * Display the specified resource.
      */
@@ -56,9 +56,18 @@ return response()->json(['message' => 'Resource stored successfully', 'data' => 
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        //
+ 
+      {
+    $feedback = Feedback::find($id);
+
+    if (!$feedback) {
+        return response()->json(['message' => 'Resource not found'], 404);
     }
+       $feedback['status'] = 'confirmed';
+       $feedback->update();
+       return response()->json(['message' => 'feedback accepted successfully']);
+   }
+
 /**
      * Remove the specified resource from storage.
      */

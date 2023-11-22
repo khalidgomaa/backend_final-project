@@ -27,7 +27,7 @@ class updateSupply extends FormRequest
             'price' => 'required|numeric|min:0',
             'quantity' => 'required|integer|min:0',
             'image' => 'required|image|mimes:jpeg,png,gif,jpg',
-            'user_id' => 'required|exists:users,id',
+            // 'user_id' => 'required|exists:users,id',
         ];
     }
 }

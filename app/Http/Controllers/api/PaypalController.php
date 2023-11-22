@@ -69,7 +69,7 @@ class PaypalController extends Controller
      */
     public function cancel()
     {
-        response()->json('you are cancelled this payment');
+        return redirect("http://localhost:4200/");
     }
 
     /**

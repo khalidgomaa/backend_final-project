@@ -14,7 +14,6 @@ use App\Http\Controllers\api\SupplyController;
 use App\Http\Controllers\api\FeedbackController;
 use App\Http\Controllers\api\PaypalController;
 use App\Http\Controllers\api\EmailController;
-use App\Models\Veterinary_center;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,7 +62,7 @@ Route::apiResource('doctors', DoctorController::class);
 
 Route::get('mydoctors', [DoctorController::class, 'mycenterdoctor'])->middleware('auth:sanctum');
 Route::get('allmydoctors', [DoctorController::class, 'allcenterdoctor']);
-
+Route::delete('adminDeleteDoctor/{id}', [DoctorController::class, 'adminDeleteDoctor']);
 
 Route::apiResource('orders', OrderController::class);
 // Route::get('order', [OrderController::class , 'index']);
@@ -84,8 +83,7 @@ Route::delete('veterinary-centers/{id}/doctors/{doctorId}', [DoctorController::c
 
 
 Route::get('updateacceptvet/{id}', [Veterinary_center::class, 'updateacceptvet']);
-Route::get('updaterejectvet/{id}', [Veterinary_center::class, 'updaterejectvet']);
-
+Route::get('updaterejectvet/{id}', [VeterinaryCenterController::class, 'updaterejectvet']);
 
 
 

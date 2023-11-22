@@ -71,8 +71,5 @@ class User extends Authenticatable
     {
         return $this->hasMany(Veterinary_center::class);
     }
-    public function doctor()
-    {
-        return $this->hasMany(Veterinary_center::class);
-    }
+  
 }

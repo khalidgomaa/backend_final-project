@@ -431,10 +431,10 @@
                                             <td style="text-align: left; padding-left: 10px;">
                                                 <h3 class="heading">Useful Links</h3>
                                                 <ul>
-                                                    <li><a href="http://localhost:4200/api/">Home</a></li>
-                                                    <li><a href="http://localhost:4200/api/about_us">About</a></li>
-                                                    <li><a href="http://localhost/:4200/products/">Pets</a></li>
-                                                    <li><a href="http://localhost:4200/api/show_Vets">Veterinarys</a>
+                                                    <li><a href="http://localhost:4200">Home</a></li>
+                                                    <li><a href="http://localhost:4200/about_us">About</a></li>
+                                                    <li><a href="http://localhost:4200/products">Pets</a></li>
+                                                    <li><a href="http://localhost:4200/show_Vets">Veterinarys</a>
                                                     </li>
                                                 </ul>
                                             </td>

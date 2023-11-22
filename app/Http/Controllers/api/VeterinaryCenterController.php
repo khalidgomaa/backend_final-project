@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\api;
+ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Veterinary_center;
@@ -27,7 +27,7 @@ class VeterinaryCenterController extends Controller
         // $user = Auth::guard('sanctum')->user()->id;
         // dd($user);
 
-        $veterinary_center = veterinary_center::all();
+        $veterinary_center = veterinary_center::with('doctors')->get();
         return VeterinaryCenterResource::collection($veterinary_center);
     }
 
@@ -145,17 +145,19 @@ class VeterinaryCenterController extends Controller
     }
 
 
-    public function updateacceptvet(veterinary_center $veterinary_center)
+    public function updateacceptvet($id)
     {
-        $veterinary_center['status'] = 'approved';
-        $veterinary_center->update();
+        $vet = veterinary_center::find($id);
+        $vet['status'] = 'approved';
+        $vet->update();
         return response()->json(['message' => 'Update accepted successfully']);
     }
 
-    public function updaterejecttvet(veterinary_center $veterinary_center)
+    public function updaterejectvet($id)
     {
-        $veterinary_center['status'] = 'unapproved';
-        $veterinary_center->update();
+        $vet = veterinary_center::find($id);
+        $vet['status'] = 'unapproved';
+        $vet->update();
         return response()->json(['message' => 'Update rejected successfully']);
     }
 
@@ -164,14 +166,8 @@ class VeterinaryCenterController extends Controller
     {
         $veterinary_center = veterinary_center::find($id);
         if ($veterinary_center) {
-            // if ($veterinary_center->image) {
-            //     $imagePath = public_path('storage/' . $veterinary_center->image);
-            //     if (file_exists($imagePath)) {
-            //         unlink($imagePath);
-            //     }
-            // }
+
             $veterinary_center->delete();
-            // return "Deleted Successfully";
         } else {
             return "Already Deleted!";
         }

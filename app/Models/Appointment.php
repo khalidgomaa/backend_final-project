@@ -16,7 +16,6 @@ class Appointment extends Model
     }
     public function veterinary()
     {
-        // return $this->belongsTo(veterinary_center::class);
-        return $this->belongsTo(veterinary_center::class);
+        return $this->belongsTo(Veterinary_center::class);
     }
 }

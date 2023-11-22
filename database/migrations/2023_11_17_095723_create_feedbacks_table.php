@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('feedbacks', function (Blueprint $table) {
             $table->id();
             $table->string('feedback');
+            $table->enum('status', ['confirmed', 'unconfirmed'])->default('unconfirmed');
+
             $table->foreignId('user_id')->references('id')->on('users')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
