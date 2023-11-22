@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Models\veterinary_center;
+use App\Models\Veterinary_center;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreVetCenterRequest;
 use App\Http\Resources\VeterinaryCenterResource;
@@ -28,7 +28,7 @@ class VeterinaryCenterController extends Controller
         // $user = Auth::guard('sanctum')->user()->id;
         // dd($user);
 
-        $veterinary_center = veterinary_center::all();
+        $veterinary_center = veterinary_center::with('doctors')->get();
         return VeterinaryCenterResource::collection($veterinary_center);
     }
 
@@ -154,7 +154,7 @@ class VeterinaryCenterController extends Controller
         return response()->json(['message' => 'Update accepted successfully']);
     }
 
-    public function updaterejecttvet($id)
+    public function updaterejectvet($id)
     {
         $vet = veterinary_center::find($id);
         $vet['status'] = 'unapproved';
@@ -167,14 +167,8 @@ class VeterinaryCenterController extends Controller
     {
         $veterinary_center = veterinary_center::find($id);
         if ($veterinary_center) {
-            // if ($veterinary_center->image) {
-            //     $imagePath = public_path('storage/' . $veterinary_center->image);
-            //     if (file_exists($imagePath)) {
-            //         unlink($imagePath);
-            //     }
-            // }
+
             $veterinary_center->delete();
-            // return "Deleted Successfully";
         } else {
             return "Already Deleted!";
         }

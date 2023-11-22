@@ -360,7 +360,9 @@
                         <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
                             <tr>
                                 <td class="logo" style="text-align: center;">
-                                    <h1><a href="http://localhost:4200/api/">Meshmesh</a></h1>
+                                    <h1><a
+                                            href="https://github.com/ColorlibHQ/email-templates/blob/master/10/images/email.png?raw=true">Meshmesh</a>
+                                    </h1>
                                 </td>
                             </tr>
                         </table>
