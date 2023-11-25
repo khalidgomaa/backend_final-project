@@ -381,7 +381,7 @@
                                     <div class="text" style="padding: 0 2.5em; text-align: center;">
                                         <h2>Your Appointment Have been added successfuly</h2>
                                         <h3>Just come in your time and have a nice time</h3>
-                                        <p><a href="http://localhost:4200/api/" class="btn btn-primary">Yes! Visit
+                                        <p><a href="http://localhost:4200/" class="btn btn-primary">Yes! Visit
                                                 Me</a></p>
                                     </div>
                                 </td>
